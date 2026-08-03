@@ -676,21 +676,21 @@ window.render=function(){
       exh+=`<div class="ex">
         <button class="del" onclick="delEx(${di},${ei})">Elimina</button>
         <button class="updown" onclick="move(${di},${ei},-1)">&#8593;</button><button class="updown" onclick="move(${di},${ei},1)">&#8595;</button>
-        <label>Nome esercizio</label><input value="${esc(e.n)}" onchange="S.giorni[${di}].ex[${ei}].n=this.value">
+        <label>Nome esercizio</label><input value="${esc(e.n)}" oninput="S.giorni[${di}].ex[${ei}].n=this.value">
         <div class="grid">
-          <div><label>Serie</label><input type="number" min="1" max="10" value="${e.s}" onchange="S.giorni[${di}].ex[${ei}].s=+this.value"></div>
-          <div><label>Ripetizioni</label><input value="${esc(e.r)}" onchange="S.giorni[${di}].ex[${ei}].r=this.value"></div>
-          <div><label>Recupero (testo)</label><input value="${esc(e.rl)}" onchange="S.giorni[${di}].ex[${ei}].rl=this.value"></div>
-          <div><label>Recupero (secondi)</label><input type="number" min="15" step="15" value="${e.rs}" onchange="S.giorni[${di}].ex[${ei}].rs=+this.value"></div>
+          <div><label>Serie</label><input type="number" min="1" max="10" value="${e.s}" oninput="S.giorni[${di}].ex[${ei}].s=+this.value"></div>
+          <div><label>Ripetizioni</label><input value="${esc(e.r)}" oninput="S.giorni[${di}].ex[${ei}].r=this.value"></div>
+          <div><label>Recupero (testo)</label><input value="${esc(e.rl)}" oninput="S.giorni[${di}].ex[${ei}].rl=this.value"></div>
+          <div><label>Recupero (secondi)</label><input type="number" min="15" step="15" value="${e.rs}" oninput="S.giorni[${di}].ex[${ei}].rs=+this.value"></div>
         </div>
         <div class="grid3">
-          <div><label>Immagine (libreria)</label><select onchange="S.giorni[${di}].ex[${ei}].img=this.value">${opt(e.img||'')}</select></div>
-          <div style="grid-column:span 2"><label>Oppure URL immagine esterna</label><input value="${esc(e.imgurl||'')}" onchange="S.giorni[${di}].ex[${ei}].imgurl=this.value" placeholder="https://..."></div>
+          <div><label>Immagine (libreria)</label><select oninput="S.giorni[${di}].ex[${ei}].img=this.value">${opt(e.img||'')}</select></div>
+          <div style="grid-column:span 2"><label>Oppure URL immagine esterna</label><input value="${esc(e.imgurl||'')}" oninput="S.giorni[${di}].ex[${ei}].imgurl=this.value" placeholder="https://..."></div>
         </div>
-        <label>Punti rapidi (uno per riga)</label><textarea onchange="S.giorni[${di}].ex[${ei}].c=lines(this.value)">${(e.c||[]).join('\n')}</textarea>
-        <label>Come si esegue (un passo per riga)</label><textarea onchange="S.giorni[${di}].ex[${ei}].st=lines(this.value)">${(e.st||[]).join('\n')}</textarea>
-        <label>Errori da evitare</label><textarea onchange="S.giorni[${di}].ex[${ei}].e=this.value">${esc(e.e||'')}</textarea>
-        <label>Video (YouTube o .mp4)</label><input value="${esc(e.v||'')}" onchange="S.giorni[${di}].ex[${ei}].v=this.value">
+        <label>Punti rapidi (uno per riga)</label><textarea oninput="S.giorni[${di}].ex[${ei}].c=lines(this.value)">${(e.c||[]).join('\n')}</textarea>
+        <label>Come si esegue (un passo per riga)</label><textarea oninput="S.giorni[${di}].ex[${ei}].st=lines(this.value)">${(e.st||[]).join('\n')}</textarea>
+        <label>Errori da evitare</label><textarea oninput="S.giorni[${di}].ex[${ei}].e=this.value">${esc(e.e||'')}</textarea>
+        <label>Video (YouTube o .mp4)</label><input value="${esc(e.v||'')}" oninput="S.giorni[${di}].ex[${ei}].v=this.value">
         <label style="display:flex;align-items:center;gap:8px;margin-top:10px;text-transform:none;font-size:13.5px;color:#1c1c1c;font-weight:700">
           <input type="checkbox" style="width:auto" ${e.rv?'checked':''} onchange="S.giorni[${di}].ex[${ei}].rv=this.checked">
           Richiedi un video della sua esecuzione
@@ -698,8 +698,8 @@ window.render=function(){
       </div>`;
     });
     dv.innerHTML=`<div class="dayhead"><h3>Giorno ${di+1}</h3>
-      <input value="${esc(d.d)}" placeholder="Nome (es. Lunedì)" onchange="S.giorni[${di}].d=this.value">
-      <input value="${esc(d.t||'')}" placeholder="Gruppo" onchange="S.giorni[${di}].t=this.value">
+      <input value="${esc(d.d)}" placeholder="Nome (es. Lunedì)" oninput="S.giorni[${di}].d=this.value">
+      <input value="${esc(d.t||'')}" placeholder="Gruppo" oninput="S.giorni[${di}].t=this.value">
       <button class="del" onclick="delDay(${di})">Elimina giorno</button></div>
       ${exh}<button class="add" onclick="addEx(${di})">+ Aggiungi esercizio</button>`;
     R.appendChild(dv);
