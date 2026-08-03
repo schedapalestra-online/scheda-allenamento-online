@@ -1,145 +1,86 @@
 <!DOCTYPE html><html lang="it"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>La mia scheda</title>
-<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#24272b">
-<link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dashboard scheda</title>
 <style>
-:root{--ink:#24272b;--bg:#e9eae6;--card:#fff;--red:#a32a2a;--chalk:#e9c46a;--line:#d4d5d0}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,'Segoe UI',Roboto,sans-serif;padding-bottom:110px}
-header{position:sticky;top:0;z-index:10;background:var(--ink);color:#fff;padding:12px 14px 10px}
-header h1{margin:0 0 2px;font-size:15px;letter-spacing:.18em;text-transform:uppercase;font-weight:900}
-header .upd{font-size:11px;color:#9a9da1;margin-bottom:8px}
-.tabs{display:flex;gap:8px}
-.tab{flex:1;border:2px solid #4a4d52;background:transparent;color:#c8cacd;border-radius:999px;padding:8px 0;font-weight:800;font-size:13px;letter-spacing:.06em}
-.tab.on{background:var(--red);border-color:var(--red);color:#fff}
-.daytitle{padding:14px 16px 2px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#6a6d70;font-weight:700}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:10px 12px;overflow:hidden}
-.card.done{opacity:.55}
-.imgwrap{background:#f6f5f1;border-bottom:1px solid var(--line);text-align:center}
-.imgwrap img{max-width:100%;max-height:260px;display:block;margin:0 auto}
-.body{padding:12px 14px}
-h2{margin:0;font-size:17px;font-weight:900}
-.meta{display:flex;gap:6px;margin:8px 0 10px;flex-wrap:wrap}
-.pill{background:#f0efe9;border:1px solid var(--line);border-radius:8px;padding:4px 9px;font-size:12.5px;font-weight:700}
-.pill.rest{background:#fbeee0;border-color:#e8d3b8}
-.cues{margin:0;padding-left:18px;font-size:14px;line-height:1.5;color:#3a3d41}
-.cues li{margin:2px 0}
-.exec{margin-top:12px;border-top:1px solid var(--line);padding-top:10px;font-size:14px;line-height:1.55}
-.exectitle{font-weight:800;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:2px}
-.exec ol{margin:4px 0;padding-left:20px}
-.exec li{margin:4px 0}
-.exec .err{background:#fdeaea;border-left:3px solid var(--red);padding:6px 10px;border-radius:0 6px 6px 0;margin-top:8px}
-.exec .yt{margin-top:10px;font-size:13px;word-break:break-all}
-.exec .yt a{color:var(--red);font-weight:700}
-.msg{margin:10px 14px;padding:8px 12px;background:#fff7e0;border-left:3px solid #d9a400;font-size:13px;border-radius:0 8px 8px 0}
-.kgrow{display:flex;gap:8px;align-items:center;margin-top:10px}
-.kgrow label{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#8a8d90;font-weight:700}
-.kgrow input{width:90px;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:15px;font-weight:800;text-align:center}
-.vidfb{font-size:12.5px;margin-top:6px}
-.vidfb a{color:var(--red);font-weight:700}
-.report{display:block;margin:14px 12px 4px;width:calc(100% - 24px);border:0;border-radius:12px;padding:14px 0;
- font-weight:900;font-size:15px;background:#1f7a3d;color:#fff}
-.sets{display:flex;gap:10px;margin:12px 0 2px;align-items:center}
-.setlbl{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#8a8d90;font-weight:700}
-.plate{width:40px;height:40px;border-radius:50%;border:3px solid var(--ink);background:#fff;font-weight:900;font-size:14px;color:var(--ink)}
-.plate.on{background:var(--ink);color:var(--chalk);box-shadow:inset 0 0 0 4px var(--chalk)}
-.vidbox{margin-top:12px;border-radius:12px;overflow:hidden;background:#000;position:relative;aspect-ratio:16/9;display:none}
-.vidbox.show{display:block}
-.vidbox iframe,.vidbox video{width:100%;height:100%;border:0;display:block}
-.row{display:flex;gap:8px;margin-top:12px}
-.btn{flex:1;border:0;border-radius:10px;padding:11px 0;font-weight:800;font-size:14px}
-.btn.timer{background:var(--red);color:#fff}
-.btn.video{background:#f0efe9;border:1px solid var(--line);color:var(--ink);text-align:center;text-decoration:none;line-height:1;padding:13px 0}
-#bar{position:fixed;left:0;right:0;bottom:-120px;transition:bottom .25s;background:var(--ink);color:#fff;display:flex;align-items:center;gap:12px;padding:12px 16px;z-index:20}
-#bar.show{bottom:0}
-#tval{font-family:ui-monospace,Menlo,monospace;font-size:38px;font-weight:800;min-width:118px;font-variant-numeric:tabular-nums}
-#tname{flex:1;font-size:13px;color:#c8cacd;line-height:1.3}
-#bar button{border:0;border-radius:10px;padding:10px 12px;font-weight:800}
-#plus{background:#4a4d52;color:#fff}
-#stop{background:var(--red);color:#fff}
-#ring{width:52px;height:52px;transform:rotate(-90deg)}
-#ring circle{fill:none;stroke-width:6}
-#ring .bgc{stroke:#4a4d52}
-#ring .fgc{stroke:var(--chalk);stroke-linecap:round;transition:stroke-dashoffset 1s linear}
-
+:root{--ink:#24272b;--bg:#e9eae6;--red:#a32a2a;--line:#d4d5d0}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,'Segoe UI',Roboto,sans-serif;padding-bottom:90px}
+header{background:var(--ink);color:#fff;padding:14px 16px}
+header h1{margin:0;font-size:15px;letter-spacing:.16em;text-transform:uppercase;font-weight:900}
+.topnav{display:flex;gap:8px;margin-top:10px}
+.tn{flex:1;text-align:center;border:2px solid #4a4d52;color:#c8cacd;border-radius:999px;padding:8px 0;font-weight:800;font-size:13px;cursor:pointer}
+.tn.on{background:var(--red);border-color:var(--red);color:#fff}
+.wrap{max-width:760px;margin:0 auto;padding:12px}
+.day{background:#fff;border:1px solid var(--line);border-radius:14px;margin:12px 0;padding:12px 14px}
+.dayhead{display:flex;gap:8px;align-items:center}
+.dayhead input{flex:1}
+.ex{border:1px solid var(--line);border-radius:10px;background:#fafaf6;padding:10px 12px;margin:10px 0}
+label{display:block;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:#6a6d70;margin:8px 0 2px}
+input,textarea,select{width:100%;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:14px;font-family:inherit;background:#fff}
+textarea{min-height:64px;line-height:1.4}
+.grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+button{border:0;border-radius:9px;padding:9px 13px;font-weight:800;font-size:13.5px;cursor:pointer}
+.add{background:#f0efe9;border:1px dashed #b9bab4;color:var(--ink);width:100%;margin-top:8px}
+.del{background:#fdeaea;color:var(--red);float:right;padding:5px 10px;font-size:12px}
+.updown{background:#f0efe9;color:var(--ink);padding:5px 10px;font-size:12px;margin-right:4px}
+#save{position:fixed;left:0;right:0;bottom:0;background:var(--ink);padding:12px 16px;display:flex;gap:10px;z-index:10}
+#save button{flex:1;padding:13px 0;font-size:15px;background:var(--red);color:#fff}
+h3{margin:0}
 .overlay{position:fixed;inset:0;background:var(--bg);z-index:50;display:flex;align-items:center;justify-content:center;padding:20px}
-.login{width:100%;max-width:340px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px}
-.login h2{margin:0 0 4px;font-size:18px}
-.login p{margin:0 0 14px;font-size:13px;color:#6a6d70}
-.login label{display:block;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:#6a6d70;margin:10px 0 3px}
-.login input{width:100%;border:1px solid var(--line);border-radius:9px;padding:11px;font-size:15px}
-.login button{width:100%;margin-top:16px;border:0;border-radius:10px;padding:13px 0;font-weight:900;font-size:15px;background:var(--red);color:#fff}
-.login .err2{color:var(--red);font-size:13px;margin-top:10px;font-weight:700}
-.savebtn{display:block;margin:14px 12px 4px;width:calc(100% - 24px);border:0;border-radius:12px;padding:14px 0;font-weight:900;font-size:15px;background:#1f7a3d;color:#fff}
-.okmsg{margin:8px 12px;padding:8px 12px;background:#e4f3e8;border-left:3px solid #1f7a3d;font-size:13px;border-radius:0 8px 8px 0}
-.logout{background:none;border:0;color:#9a9da1;font-size:12px;text-decoration:underline;padding:0;float:right}
+.login{width:100%;max-width:340px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px}
+.login h2{margin:0 0 14px;font-size:18px}
+.login button{width:100%;margin-top:16px;padding:13px 0;font-size:15px;background:var(--red);color:#fff}
+.err2{color:var(--red);font-size:13px;margin-top:10px;font-weight:700}
+.okmsg{position:fixed;bottom:74px;left:16px;right:16px;background:#e4f3e8;border-left:3px solid #1f7a3d;padding:10px 12px;font-size:13.5px;border-radius:0 8px 8px 0;z-index:11}
+/* storico */
+.sess{background:#fff;border:1px solid var(--line);border-radius:12px;margin:10px 0;padding:12px 14px}
+.sess .h{display:flex;justify-content:space-between;font-weight:800}
+.sess .sub{font-size:12.5px;color:#6a6d70;margin:2px 0 8px}
+.sess table{width:100%;border-collapse:collapse;font-size:13.5px}
+.sess td{padding:4px 6px;border-top:1px solid #eee}
+.sess td:nth-child(2),.sess td:nth-child(3){text-align:right;white-space:nowrap}
+.badge{font-size:11px;font-weight:900;border-radius:6px;padding:2px 7px}
+.badge.ok{background:#e4f3e8;color:#1f7a3d}
+.badge.mid{background:#fff7e0;color:#9c7400}
 
-.nutri{padding:4px 14px 20px;max-width:760px;margin:0 auto}
-.nutri h3{color:var(--red);font-size:16px;margin:18px 0 6px}
-.nutri p,.nutri li{font-size:14.5px;line-height:1.6;color:#e6e4de}
-.nutri ul{padding-left:18px;margin:6px 0}
-.nutri li{margin:5px 0}
-.nb{border-radius:0 10px 10px 0;padding:10px 13px;font-size:14px;line-height:1.55;margin:12px 0}
-.warn2{background:#3a2e12;border-left:3px solid var(--chalk);color:#f0e6cf}
-.note2{font-size:13.5px;color:#b7bac0;font-style:italic}
-.plate-vis{display:flex;height:56px;border-radius:12px;overflow:hidden;margin:10px 0;font-weight:900;font-size:12px;letter-spacing:.04em}
-.plate-vis .pv{display:flex;align-items:center;justify-content:center;color:#12140f}
-.plate-vis .verd{flex:2;background:#7cae5a}.plate-vis .carb{flex:1;background:#e9c46a}.plate-vis .prot{flex:1;background:#d98b5f}
-.ptab{width:100%;border-collapse:collapse;margin:8px 0;font-size:13.5px}
-.ptab th,.ptab td{border:1px solid var(--line);padding:7px 9px;text-align:left;color:#e6e4de}
-.ptab th{background:#2b2f35;font-size:12px;letter-spacing:.04em;text-transform:uppercase}
-
-.mis{padding:6px 14px 20px;max-width:760px;margin:0 auto}
-.mis h3{color:var(--red);font-size:16px;margin:16px 0 8px}
-.mis .nb{border-radius:0 10px 10px 0;padding:10px 13px;font-size:13.5px;line-height:1.55;margin:10px 0;background:#3a2e12;border-left:3px solid var(--chalk);color:#f0e6cf}
-.misform{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:8px 0}
-.misform .full{grid-column:1/-1}
-.misform label{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:var(--dim);margin-bottom:3px}
-.misform input{width:100%;border:1px solid var(--line);border-radius:9px;padding:10px;font-size:15px;font-weight:700;background:var(--panel);color:var(--txt)}
-.misbtn{width:100%;border:0;border-radius:11px;padding:13px 0;font-weight:900;font-size:15px;background:#1f7a3d;color:#fff;margin-top:4px}
-.mistab{width:100%;border-collapse:collapse;margin-top:12px;font-size:13.5px}
-.mistab th,.mistab td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:right;color:var(--txt)}
-.mistab th{font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--dim);text-align:right}
+.mistab{width:100%;border-collapse:collapse;margin:10px 0;font-size:13.5px;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.mistab th,.mistab td{border-bottom:1px solid #eee;padding:9px 10px;text-align:right}
+.mistab th{background:#f0ece4;font-size:11px;letter-spacing:.04em;text-transform:uppercase}
 .mistab td:first-child,.mistab th:first-child{text-align:left}
-.trend{font-size:12px;font-weight:800}
-.trend.dn{color:#5bbd7a}.trend.up{color:#d98b5f}
-
-.today{margin:10px 12px 0;padding:10px 13px;border-radius:12px;background:#26313d;border:1px solid #35455a;font-size:14px;font-weight:700}
-.coach{margin:10px 12px 0;padding:10px 13px;border-radius:12px;background:#3a2e12;border-left:4px solid var(--chalk);font-size:14px;line-height:1.5}
-.coach .cd{font-size:11px;color:#b7a76f;letter-spacing:.08em;text-transform:uppercase;font-weight:800;margin-bottom:2px}
-.lastw{font-size:12.5px;color:#9fc3a8;font-weight:700;margin-top:6px}
-.icsbtn{background:none;border:1px solid var(--line);color:var(--dim);border-radius:8px;font-size:12px;padding:6px 10px;margin:8px 12px 0;font-weight:700}
-
-.reqvid{margin-top:10px;padding:9px 12px;border-radius:10px;background:#2b2440;border-left:4px solid #8d7ae6;font-size:13.5px;line-height:1.5}
-</style>
-</head><body>
+.dn{color:#1f7a3d;font-weight:800}.up{color:#a35a2a;font-weight:800}
+</style></head><body>
 <div class="overlay" id="loginov"><div class="login">
- <h2>La mia scheda</h2><p>Accedi con l'account che ti è stato creato. Resterai collegato.</p>
- <label>Email</label><input id="lemail" type="email" autocomplete="username">
- <label>Password</label><input id="lpass" type="password" autocomplete="current-password">
+ <h2>Dashboard — accesso</h2>
+ <label>Email</label><input id="lemail" type="email">
+ <label>Password</label><input id="lpass" type="password">
  <button id="lbtn">Entra</button><div class="err2" id="lerr"></div>
 </div></div>
-<header><h1 id="htitle">La mia scheda</h1><div class="upd" id="hupd"></div><div class="tabs" id="tabs"></div></header>
-<div id="notice"></div>
-<div id="coachnote"></div>
-<div id="todaybox"></div>
-<div id="view"></div>
-<div id="bar">
- <svg id="ring" viewBox="0 0 52 52"><circle class="bgc" cx="26" cy="26" r="22"/><circle class="fgc" cx="26" cy="26" r="22" stroke-dasharray="138.2" stroke-dashoffset="0"/></svg>
- <div id="tval">0:00</div><div id="tname"></div>
- <button id="plus">+30s</button><button id="stop">Stop</button>
+<header><h1>Dashboard scheda</h1>
+ <div style="margin-top:10px"><select id="whoSel" onchange="cambiaPersona()" style="width:100%;padding:9px;border-radius:9px;font-size:14px;font-weight:700"></select></div>
+ <div class="topnav" style="margin-top:10px"><div class="tn on" id="nav0">Scheda</div><div class="tn" id="nav1">Allenamenti</div><div class="tn" id="nav2">Misure</div></div>
+</header>
+<div class="wrap" id="pgScheda">
+ <div class="day" style="border-left:4px solid #d9a400">
+   <label>Nota per tuo nipote (compare in cima alla sua app)</label>
+   <textarea id="nota" placeholder="es. Questa settimana cura la discesa nell'hack squat. Bravo per venerdì!"></textarea>
+   <button class="add" style="border-style:solid;background:#fff7e0" onclick="salvaNota()">Invia nota</button>
+ </div>
+ <label>Titolo scheda</label><input id="titolo">
+ <div id="days"></div>
+ <button class="add" onclick="addDay()">+ Aggiungi giorno</button>
 </div>
+<div class="wrap" id="pgLog" style="display:none"><div id="loglist">Caricamento…</div></div>
+<div class="wrap" id="pgMis" style="display:none"><div id="mislist">Caricamento…</div></div>
+<div id="save"><button onclick="salvaScheda()">&#128190; Pubblica la scheda</button></div>
+<div id="ok"></div>
 <script src="immagini.js"></script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { initializeFirestore, persistentLocalCache, doc, getDoc, setDoc, addDoc, collection, serverTimestamp, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { firebaseConfig } from "./config.js";
-
-const fapp = initializeApp(firebaseConfig);
-const auth = getAuth(fapp);
-const db = initializeFirestore(fapp, {localCache: persistentLocalCache()});
+const fapp=initializeApp(firebaseConfig), auth=getAuth(fapp), db=getFirestore(fapp);
 
 const DEFAULT_SCHEDA={
  "titolo": "La mia scheda · 4 giorni",
@@ -677,291 +618,187 @@ const DEFAULT_SCHEDA={
   }
  ]
 };
-let SCHEDA=DEFAULT_SCHEDA, DATA=SCHEDA.giorni, day=0, done={}, kgs={}, USER=null, LASTW={};
+let S=null, TARGET=null, UTENTI=[];
 
-// ---------- LOGIN ----------
 document.getElementById('lbtn').onclick=async()=>{
-  const e=document.getElementById('lemail').value.trim(), p=document.getElementById('lpass').value;
-  document.getElementById('lerr').textContent='';
-  try{ await setPersistence(auth, browserLocalPersistence);
-       await signInWithEmailAndPassword(auth,e,p); }
-  catch(err){ document.getElementById('lerr').textContent='Accesso non riuscito: controlla email e password.'; }
+  try{await setPersistence(auth,browserLocalPersistence);
+      await signInWithEmailAndPassword(auth,document.getElementById('lemail').value.trim(),document.getElementById('lpass').value);}
+  catch(e){document.getElementById('lerr').textContent='Accesso non riuscito.';}
 };
-onAuthStateChanged(auth, async u=>{
-  if(u){ USER=u; document.getElementById('loginov').style.display='none';
-    try{ await setDoc(doc(db,'utenti',u.uid),{email:u.email, nome:(u.displayName||u.email), ultimoAccesso:serverTimestamp()},{merge:true}); }catch(e){}
-    await loadScheda();
-  } else { document.getElementById('loginov').style.display='flex'; }
+onAuthStateChanged(auth,async u=>{
+  if(!u){document.getElementById('loginov').style.display='flex';return;}
+  document.getElementById('loginov').style.display='none';
+  // elenco persone (registrate dalle app al primo accesso)
+  try{
+    const us=await getDocs(collection(db,'utenti'));
+    UTENTI=[]; us.forEach(d=>{const v=d.data(); UTENTI.push({uid:d.id, nome:v.nome||v.email||d.id});});
+  }catch(e){ UTENTI=[]; }
+  const sel=document.getElementById('whoSel'); sel.innerHTML='';
+  if(!UTENTI.length){ sel.innerHTML='<option>Nessun utente ha ancora aperto l\'app</option>'; }
+  UTENTI.forEach(x=>{const o=document.createElement('option');o.value=x.uid;o.textContent=x.nome;sel.appendChild(o);});
+  TARGET = UTENTI.length?UTENTI[0].uid:null;
+  await caricaPersona();
 });
-
-// ---------- SCHEDA DA FIRESTORE ----------
-async function loadScheda(){
-  try{
-    const snap=await getDoc(doc(db,'utenti',USER.uid,'dati','scheda'));
-    if(snap.exists()){ SCHEDA=snap.data(); DATA=SCHEDA.giorni; }
-    document.getElementById('notice').innerHTML='';
-  }catch(e){
-    document.getElementById('notice').innerHTML='<div class="msg">Offline: mostro l\'ultima scheda salvata.</div>';
-  }
-  try{ const ns=await getDoc(doc(db,'utenti',USER.uid,'dati','nota'));
-    if(ns.exists() && ns.data().testo){
-      document.getElementById('coachnote').innerHTML=
-        `<div class="coach"><div class="cd">Nota dello zio · ${ns.data().data||''}</div>${ns.data().testo}</div>`;
-    } else { document.getElementById('coachnote').innerHTML=''; }
-  }catch(e){}
-  try{ const ws=await getDoc(doc(db,'utenti',USER.uid,'dati','pesi'));
-    if(ws.exists()) LASTW=ws.data();
-  }catch(e){}
-  // banner "oggi tocca"
-  const wd=['domenica','lunedì','martedì','mercoledì','giovedì','venerdì','sabato'][new Date().getDay()];
-  const oggi=DATA.findIndex(d=>d.d.toLowerCase().startsWith(wd.slice(0,5)));
-  if(oggi>=0){
-    document.getElementById('todaybox').innerHTML=
-      `<div class="today">💪 Oggi tocca: <span style="color:var(--chalk)">${DATA[oggi].d} — ${DATA[oggi].t||''}</span></div>
-       <button class="icsbtn" onclick="scaricaICS()">🔔 Aggiungi promemoria al calendario del telefono</button>`;
-    day=oggi;
-  } else {
-    document.getElementById('todaybox').innerHTML='<button class="icsbtn" onclick="scaricaICS()">🔔 Aggiungi promemoria al calendario del telefono</button>';
-  }
-  buildTabs(); render();
-}
-window.scaricaICS=function(){
-  const map={'lun':'MO','mar':'TU','mer':'WE','gio':'TH','ven':'FR','sab':'SA','dom':'SU'};
-  let ics='BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//scheda//IT\r\n';
-  DATA.forEach((d,i)=>{
-    const by=map[d.d.slice(0,3).toLowerCase()]; if(!by) return;
-    ics+='BEGIN:VEVENT\r\nUID:scheda-'+i+'@app\r\nDTSTART;TZID=Europe/Rome:20260713T170000\r\nDURATION:PT1H30M\r\n'
-      +'RRULE:FREQ=WEEKLY;BYDAY='+by+'\r\nSUMMARY:Allenamento: '+(d.t||d.d)+'\r\n'
-      +'BEGIN:VALARM\r\nTRIGGER:-PT30M\r\nACTION:DISPLAY\r\nDESCRIPTION:Allenamento tra 30 minuti\r\nEND:VALARM\r\nEND:VEVENT\r\n';
-  });
-  ics+='END:VCALENDAR\r\n';
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([ics],{type:'text/calendar'}));
-  a.download='promemoria_allenamenti.ics'; a.click();
-}
-function buildTabs(){
-  document.getElementById('htitle').textContent=SCHEDA.titolo||'La mia scheda';
-  document.getElementById('hupd').textContent=SCHEDA.aggiornata?('Aggiornata il '+SCHEDA.aggiornata):'';
-  const tabs=document.getElementById('tabs'); tabs.innerHTML='';
-  DATA.forEach((d,i)=>{const b=document.createElement('button');
-    b.className='tab'+(i===day&&day>=0?' on':''); b.textContent=d.d.slice(0,3).toUpperCase();
-    b.onclick=()=>{day=i;render();}; tabs.appendChild(b);});
-  const nb=document.createElement('button');
-  nb.className='tab'+(day===-1?' on':''); nb.textContent='🍽';
-  nb.style.flex='0 0 46px'; nb.onclick=()=>{day=-1;renderNutri();}; tabs.appendChild(nb);
-  const mb=document.createElement('button');
-  mb.className='tab'+(day===-2?' on':''); mb.textContent='📏';
-  mb.style.flex='0 0 46px'; mb.onclick=()=>{day=-2;renderMisure();}; tabs.appendChild(mb);
-}
-function img(e){
-  if(e.img && IMGS[e.img]) return `<div class="imgwrap"><img loading="lazy" src="data:image/jpeg;base64,${IMGS[e.img]}" alt=""></div>`;
-  if(e.imgurl) return `<div class="imgwrap"><img loading="lazy" src="${e.imgurl}" alt=""></div>`;
-  return '';
-}
-const NUTRI_HTML=`
-<div class="nutri">
- <div class="nb warn2"><strong>Prima di tutto:</strong> questi sono principi generali di educazione alimentare, non una dieta. Per quantità personalizzate (soprattutto per dimagrire) serve un medico o un nutrizionista. A 17 anni sei ancora in crescita: mai diete fai-da-te o troppo restrittive.</div>
-
- <h3>La regola numero uno</h3>
- <p>Da principiante che vuole <strong>mettere muscolo e definirsi insieme</strong>, non devi né abbuffarti né metterti a dieta. All'inizio il corpo fa entrambe le cose se mangi <em>bene e a sufficienza</em>. Obiettivo: pasti normali e regolari, non "tanto" e non "poco".</p>
-
- <h3>Il metodo del piatto</h3>
- <p>Il modo più semplice per comporre un pasto senza pesare niente. Dividi il piatto in tre:</p>
- <div class="plate-vis"><div class="pv verd">½ VERDURA</div><div class="pv carb">¼ CARBOIDRATI</div><div class="pv prot">¼ PROTEINE</div></div>
- <ul>
-   <li><strong>Metà verdura</strong> (cruda o cotta): riempie, dà fibra e micronutrienti.</li>
-   <li><strong>Un quarto carboidrati</strong>: pasta, riso, pane, patate. Sono il carburante per allenarti, non il nemico.</li>
-   <li><strong>Un quarto proteine</strong>: carne, pesce, uova, legumi, latticini. Servono a costruire il muscolo.</li>
-   <li>Aggiungi un cucchiaio di <strong>olio d'oliva</strong> a crudo e un frutto.</li>
- </ul>
-
- <h3>Perché 300 g di pasta + 300 g di spezzatino no</h3>
- <p>È il classico errore. Ecco le porzioni <em>indicative</em> per un ragazzo attivo della tua età (a crudo):</p>
- <table class="ptab">
-   <tr><th>Alimento</th><th>Porzione indicativa</th><th>L'errore</th></tr>
-   <tr><td>Pasta / riso</td><td>80–100 g</td><td>300 g = tripla porzione</td></tr>
-   <tr><td>Carne / pesce</td><td>100–150 g</td><td>300 g = doppia porzione</td></tr>
-   <tr><td>Pane</td><td>50–70 g</td><td>—</td></tr>
-   <tr><td>Verdura</td><td>a volontà</td><td>quella che spesso manca</td></tr>
-   <tr><td>Frutta</td><td>1–2 frutti</td><td>—</td></tr>
- </table>
- <p class="note2">Un piatto da 300+300 è due-tre pasti in uno, quasi senza verdura: troppo in un colpo solo, poco equilibrato. Meglio la porzione giusta e, se hai ancora fame, aggiungere verdura o un frutto.</p>
-
- <h3>Come distribuire la giornata</h3>
- <ul>
-   <li><strong>Non saltare la colazione</strong>: è il pasto che salti proprio quando ti alleni. Vanno bene latte/yogurt, cereali o pane, un frutto.</li>
-   <li><strong>3 pasti + 1–2 spuntini</strong> (frutta, yogurt, frutta secca) tengono stabile l'energia meglio di due mega-pasti.</li>
-   <li><strong>Attorno all'allenamento</strong>: un pasto normale 1–2 ore prima; dopo, un pasto completo con proteine e carboidrati. Niente di complicato.</li>
- </ul>
-
- <h3>Acqua</h3>
- <p>Bevi durante il giorno e in allenamento. Circa <strong>1,5–2 litri</strong>, di più se sudi molto. Le bibite zuccherate e gli energy drink non contano e sono da limitare.</p>
-
- <h3>I 5 errori del principiante</h3>
- <ul>
-   <li><strong>Saltare i pasti</strong> pensando di definirsi: rallenti i progressi e arrivi affamato la sera.</li>
-   <li><strong>Proteine "a tutti i costi"</strong>: servono, ma 300 g di carne non fanno più muscolo di 130. Il muscolo cresce con allenamento + sonno + cibo adeguato, non con l'eccesso.</li>
-   <li><strong>Integratori e proteine in polvere</strong>: da principiante non servono. Prima si sistema il piatto vero. Semmai, ne parli con un professionista.</li>
-   <li><strong>Diete drastiche viste sui social</strong>: a 17 anni fanno più danni che risultati.</li>
-   <li><strong>Dormire poco</strong>: il muscolo si costruisce nel recupero. 8+ ore contano quanto la palestra.</li>
- </ul>
-
- <div class="nb warn2"><strong>Quando serve il professionista:</strong> se l'obiettivo è perdere peso in modo mirato, se ci sono allergie o condizioni mediche, o se vuoi numeri precisi (calorie, grammature). Un nutrizionista imposta tutto sulla persona; questa scheda serve solo a farti capire come è fatto un pasto sensato.</p></div>
-</div>
-`;
-window.renderNutri=function(){
-  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
-  const tabs=document.querySelectorAll('#tabs .tab'); if(tabs.length) tabs[tabs.length-1].classList.add('on');
-  document.getElementById('view').innerHTML=NUTRI_HTML;
+window.cambiaPersona=async()=>{ TARGET=document.getElementById('whoSel').value; await caricaPersona(); };
+async function caricaPersona(){
+  if(!TARGET){S=JSON.parse(JSON.stringify(DEFAULT_SCHEDA));document.getElementById('titolo').value=S.titolo||'';render();return;}
+  const snap=await getDoc(doc(db,'utenti',TARGET,'dati','scheda'));
+  S=snap.exists()?snap.data():JSON.parse(JSON.stringify(DEFAULT_SCHEDA));
+  document.getElementById('titolo').value=S.titolo||'';
+  try{const ns=await getDoc(doc(db,'utenti',TARGET,'dati','nota'));
+      document.getElementById('nota').value=ns.exists()?(ns.data().testo||''):'';}catch(e){}
+  render(); loadLog(); if(document.getElementById('pgMis').style.display!=='none')loadMis();
 }
 
-window.renderMisure=async function(){
-  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
-  const tabs=document.querySelectorAll('#tabs .tab'); if(tabs.length) tabs[tabs.length-1].classList.add('on');
-  const oggi=new Date().toISOString().slice(0,10);
-  document.getElementById('view').innerHTML=`<div class="mis">
-    <h3>Registro misure</h3>
-    <div class="nb">Serve a seguire i progressi nel tempo e ad arrivare dal nutrizionista sportivo con uno storico. Non è un giudizio: sono solo numeri da mostrare a chi ti segue. Misura a digiuno, la mattina, sempre nelle stesse condizioni.</div>
-    <div class="misform">
-      <div><label>Data</label><input type="date" id="m_data" value="${oggi}"></div>
-      <div><label>Peso (kg)</label><input type="number" inputmode="decimal" id="m_peso" placeholder="es. 94"></div>
-      <div><label>Vita (cm)</label><input type="number" inputmode="decimal" id="m_vita" placeholder="es. 102"></div>
-      <div><label>Altezza (cm)</label><input type="number" inputmode="decimal" id="m_alt" placeholder="es. 186"></div>
-      <div class="full"><label>Note (facoltativo)</label><input type="text" id="m_note" placeholder="es. dopo 2 settimane"></div>
-    </div>
-    <button class="misbtn" onclick="salvaMisura()">&#10003; Salva misura di oggi</button>
-    <div id="mistoria">Caricamento storico…</div>
-  </div>`;
-  caricaMisure();
+// ---- navigazione ----
+document.getElementById('nav0').onclick=()=>{nav(0)};
+document.getElementById('nav1').onclick=()=>{nav(1)};
+document.getElementById('nav2').onclick=()=>{nav(2)};
+function nav(i){
+  [0,1,2].forEach(k=>document.getElementById('nav'+k).classList.toggle('on',i===k));
+  document.getElementById('pgScheda').style.display=i===0?'block':'none';
+  document.getElementById('save').style.display=i===0?'flex':'none';
+  document.getElementById('pgLog').style.display=i===1?'block':'none';
+  document.getElementById('pgMis').style.display=i===2?'block':'none';
+  if(i===2) loadMis();
 }
-window.salvaMisura=async function(){
-  const rec={
-    data:document.getElementById('m_data').value||new Date().toISOString().slice(0,10),
-    peso:parseFloat(document.getElementById('m_peso').value)||null,
-    vita:parseFloat(document.getElementById('m_vita').value)||null,
-    altezza:parseFloat(document.getElementById('m_alt').value)||null,
-    note:document.getElementById('m_note').value||'',
-    utente:USER?USER.email:'', creato:serverTimestamp()
-  };
-  if(!rec.peso && !rec.vita){alert('Inserisci almeno peso o vita.');return;}
-  try{ await addDoc(collection(db,'utenti',USER.uid,'misure'),rec); caricaMisure(); 
-    document.getElementById('m_peso').value='';document.getElementById('m_vita').value='';document.getElementById('m_note').value=''; }
-  catch(e){ alert('Salvataggio in coda (offline): verrà inviato appena c\'è connessione.'); }
-}
-async function caricaMisure(){
-  const box=document.getElementById('mistoria'); if(!box)return;
-  try{
-    const q=query(collection(db,'utenti',USER.uid,'misure'),orderBy('creato','desc'),limit(40));
-    const snap=await getDocs(q);
-    if(snap.empty){box.innerHTML='<p style="color:var(--dim);font-size:14px;margin-top:14px">Nessuna misura registrata. Salva la prima qui sopra.</p>';return;}
-    const rows=[]; snap.forEach(d=>rows.push(d.data()));
-    let h='<table class="mistab"><tr><th>Data</th><th>Peso</th><th>Vita</th><th>Var. peso</th></tr>';
-    rows.forEach((r,i)=>{
-      let tr='';
-      const prev=rows[i+1];
-      if(prev && r.peso && prev.peso){
-        const d=(r.peso-prev.peso);
-        const cls=d<0?'dn':(d>0?'up':'');
-        tr=`<span class="trend ${cls}">${d>0?'+':''}${d.toFixed(1)}</span>`;
-      }
-      h+=`<tr><td>${r.data}${r.note?'<br><span style="color:var(--dim);font-size:11px">'+r.note+'</span>':''}</td>
-        <td>${r.peso?r.peso+' kg':'—'}</td><td>${r.vita?r.vita+' cm':'—'}</td><td>${tr||'—'}</td></tr>`;
-    });
-    h+='</table>';
-    box.innerHTML=h;
-  }catch(e){ box.innerHTML='<p style="color:var(--dim)">Storico non disponibile offline.</p>'; }
-}
+
+// ---- editor (come prima, ma salva su Firestore) ----
+function opt(sel){return Object.keys(IMG_LABELS).map(k=>`<option value="${k}" ${k===sel?'selected':''}>${IMG_LABELS[k]}</option>`).join('');}
+function esc(s){return String(s??'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
+window.lines=v=>v.split('\n').map(x=>x.trim()).filter(Boolean);
 window.render=function(){
-  if(day===-1){renderNutri();return;}
-  if(day===-2){renderMisure();return;}
-  document.querySelectorAll('.tab').forEach((b,i)=>b.classList.toggle('on',i===day));
-  const d=DATA[day];
-  let h=`<div class="daytitle">${d.d} &mdash; ${d.t||''}</div>`;
-  d.ex.forEach((e,j)=>{
-    const key=day+'-'+j, n=done[key]||0, fin=n>=e.s;
-    let plates='';
-    for(let s=0;s<e.s;s++) plates+=`<button class="plate ${s<n?'on':''}" onclick="tick(${j},${s})">${s+1}</button>`;
-    h+=`<div class="card ${fin?'done':''}">${img(e)}
-      <div class="body"><h2>${e.n}</h2>
-        <div class="meta"><span class="pill">${e.s} serie</span><span class="pill">${e.r} rip.</span><span class="pill rest">rec. ${e.rl}</span></div>
-        ${e.rv?`<div class="reqvid">🎥 <strong>Lo zio ti chiede un video di questa esecuzione</strong>: filmati di lato, con carico leggero, una serie intera, e mandaglielo su WhatsApp.</div>`:''}
-        ${e.c&&e.c.length?`<ul class="cues">${e.c.map(c=>`<li>${c}</li>`).join('')}</ul>`:''}
-        ${e.st&&e.st.length?`<div class="exec"><div class="exectitle">Come si esegue</div>
-          <ol>${e.st.map(s=>`<li>${s}</li>`).join('')}</ol>
-          ${e.e?`<div class="err"><strong>Errori da evitare:</strong> ${e.e}</div>`:''}
-          ${e.v?`<div class="yt"><strong>Tutorial YouTube:</strong> <a href="${e.v}" target="_blank">${e.v}</a></div>`:''}
-        </div>`:''}
-        <div class="sets"><span class="setlbl">Serie</span>${plates}</div>
-        <div class="kgrow"><label>Peso usato</label><input type="number" inputmode="decimal" placeholder="kg" value="${kgs[key]||(LASTW[e.n]&&LASTW[e.n].kg)||''}" onchange="kgs['${key}']=this.value"></div>
-        ${LASTW[e.n]?`<div class="lastw">Ultima volta (${LASTW[e.n].data}): ${LASTW[e.n].fatte}/${LASTW[e.n].tot} serie${LASTW[e.n].kg?' @ '+LASTW[e.n].kg+' kg':''}</div>`:''}
-        <div class="vidbox" id="vid-${day}-${j}"></div>
-        <div class="row">
-          <button class="btn timer" onclick="startTimer(${e.rs},'${(e.n||'').replace(/'/g,"\\'")}')">&#9202; Recupero ${e.rl}</button>
-          ${e.v?`<button class="btn video" onclick="playVideo(${j})">&#9654; Guarda il video</button>`:''}
+  const R=document.getElementById('days');R.innerHTML='';
+  S.giorni.forEach((d,di)=>{
+    const dv=document.createElement('div');dv.className='day';
+    let exh='';
+    d.ex.forEach((e,ei)=>{
+      exh+=`<div class="ex">
+        <button class="del" onclick="delEx(${di},${ei})">Elimina</button>
+        <button class="updown" onclick="move(${di},${ei},-1)">&#8593;</button><button class="updown" onclick="move(${di},${ei},1)">&#8595;</button>
+        <label>Nome esercizio</label><input value="${esc(e.n)}" oninput="S.giorni[${di}].ex[${ei}].n=this.value">
+        <div class="grid">
+          <div><label>Serie</label><input type="number" min="1" max="10" value="${e.s}" oninput="S.giorni[${di}].ex[${ei}].s=+this.value"></div>
+          <div><label>Ripetizioni</label><input value="${esc(e.r)}" oninput="S.giorni[${di}].ex[${ei}].r=this.value"></div>
+          <div><label>Recupero (testo)</label><input value="${esc(e.rl)}" oninput="S.giorni[${di}].ex[${ei}].rl=this.value"></div>
+          <div><label>Recupero (secondi)</label><input type="number" min="15" step="15" value="${e.rs}" oninput="S.giorni[${di}].ex[${ei}].rs=+this.value"></div>
         </div>
-      </div></div>`;
+        <div class="grid3">
+          <div><label>Immagine (libreria)</label><select oninput="S.giorni[${di}].ex[${ei}].img=this.value">${opt(e.img||'')}</select></div>
+          <div style="grid-column:span 2"><label>Oppure URL immagine esterna</label><input value="${esc(e.imgurl||'')}" oninput="S.giorni[${di}].ex[${ei}].imgurl=this.value" placeholder="https://..."></div>
+        </div>
+        <label>Punti rapidi (uno per riga)</label><textarea oninput="S.giorni[${di}].ex[${ei}].c=lines(this.value)">${(e.c||[]).join('\n')}</textarea>
+        <label>Come si esegue (un passo per riga)</label><textarea oninput="S.giorni[${di}].ex[${ei}].st=lines(this.value)">${(e.st||[]).join('\n')}</textarea>
+        <label>Errori da evitare</label><textarea oninput="S.giorni[${di}].ex[${ei}].e=this.value">${esc(e.e||'')}</textarea>
+        <label>Video (YouTube o .mp4)</label><input value="${esc(e.v||'')}" oninput="S.giorni[${di}].ex[${ei}].v=this.value">
+        <label style="display:flex;align-items:center;gap:8px;margin-top:10px;text-transform:none;font-size:13.5px;color:#1c1c1c;font-weight:700">
+          <input type="checkbox" style="width:auto" ${e.rv?'checked':''} onchange="S.giorni[${di}].ex[${ei}].rv=this.checked">
+          Richiedi un video della sua esecuzione
+        </label>
+      </div>`;
+    });
+    dv.innerHTML=`<div class="dayhead"><h3>Giorno ${di+1}</h3>
+      <input value="${esc(d.d)}" placeholder="Nome (es. Lunedì)" oninput="S.giorni[${di}].d=this.value">
+      <input value="${esc(d.t||'')}" placeholder="Gruppo" oninput="S.giorni[${di}].t=this.value">
+      <button class="del" onclick="delDay(${di})">Elimina giorno</button></div>
+      ${exh}<button class="add" onclick="addEx(${di})">+ Aggiungi esercizio</button>`;
+    R.appendChild(dv);
   });
-  h+=`<button class="savebtn" onclick="salva()">&#10003; Fine allenamento &mdash; salva</button><div id="okz"></div>`;
-  document.getElementById('view').innerHTML=h;
 }
-window.salva=async function(){
-  const d=DATA[day];
-  const esercizi=d.ex.map((e,j)=>{const key=day+'-'+j;
-    return {n:e.n, fatte:done[key]||0, tot:e.s, kg:kgs[key]||null};});
-  const fatte=esercizi.reduce((a,x)=>a+x.fatte,0), tot=esercizi.reduce((a,x)=>a+x.tot,0);
+window.addDay=()=>{S.giorni.push({d:'Nuovo giorno',t:'',ex:[]});render();};
+window.delDay=i=>{if(confirm('Eliminare il giorno?')){S.giorni.splice(i,1);render();}};
+window.addEx=di=>{S.giorni[di].ex.push({n:'Nuovo esercizio',s:3,r:'8-12',rl:'2 min',rs:120,img:'',imgurl:'',c:[],st:[],e:'',v:''});render();};
+window.delEx=(di,ei)=>{if(confirm('Eliminare questo esercizio?')){S.giorni[di].ex.splice(ei,1);render();}};
+window.move=(di,ei,dir)=>{const a=S.giorni[di].ex,j=ei+dir;if(j<0||j>=a.length)return;[a[ei],a[j]]=[a[j],a[ei]];render();};
+window.salvaNota=async()=>{
+  try{ await setDoc(doc(db,'utenti',TARGET,'dati','nota'),
+    {testo:document.getElementById('nota').value.trim(),
+     data:new Date().toLocaleDateString('it-IT')});
+    flash('Nota inviata: la vede all\'apertura dell\'app. (Campo vuoto = nota rimossa.)');}
+  catch(e){flash('Errore: '+e.message);}
+};
+window.salvaScheda=async()=>{
+  S.titolo=document.getElementById('titolo').value;
+  S.aggiornata=new Date().toISOString().slice(0,10);
+  try{ await setDoc(doc(db,'utenti',TARGET,'dati','scheda'), S);
+    flash('Scheda pubblicata: tuo nipote la riceve alla prossima apertura dell\'app.');}
+  catch(e){ flash('Errore di salvataggio: '+e.message); }
+};
+function flash(m){const d=document.getElementById('ok');d.innerHTML=`<div class="okmsg">${m}</div>`;
+  setTimeout(()=>d.innerHTML='',4000);}
+
+// ---- storico allenamenti ----
+function svgChart(pts,color,unit){
+  if(pts.length<2) return '<p style="color:#888;font-size:13px">Servono almeno 2 misurazioni per il grafico.</p>';
+  const W=680,H=170,P=34;
+  const xs=pts.map((_,i)=>P+i*(W-2*P)/(pts.length-1));
+  const vals=pts.map(p=>p.v);
+  const mn=Math.min(...vals),mx=Math.max(...vals),rg=(mx-mn)||1;
+  const ys=vals.map(v=>H-P-(v-mn)/rg*(H-2*P));
+  let s=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;background:#fff;border:1px solid #d4d5d0;border-radius:12px">`;
+  s+=`<polyline fill="none" stroke="${color}" stroke-width="3" stroke-linejoin="round" points="${xs.map((x,i)=>x+','+ys[i]).join(' ')}"/>`;
+  pts.forEach((p,i)=>{s+=`<circle cx="${xs[i]}" cy="${ys[i]}" r="4" fill="${color}"/>`;
+    s+=`<text x="${xs[i]}" y="${ys[i]-9}" font-size="11" text-anchor="middle" fill="#444" font-weight="700">${p.v}${unit}</text>`;
+    s+=`<text x="${xs[i]}" y="${H-10}" font-size="9.5" text-anchor="middle" fill="#888">${p.d.slice(5)}</text>`;});
+  return s+'</svg>';
+}
+async function loadMis(){
+  const box=document.getElementById('mislist');
+  if(!TARGET){box.innerHTML='<p>Nessun utente.</p>';return;}
   try{
-    await addDoc(collection(db,'utenti',USER.uid,'allenamenti'),{
-      data:new Date().toISOString().slice(0,10), giorno:d.d, gruppo:d.t||'',
-      esercizi, fatte, tot, utente:USER?USER.email:'', creato:serverTimestamp()});
-    const upd={};
-    d.ex.forEach((e,j)=>{const key=day+'-'+j;
-      if((done[key]||0)>0 || kgs[key]){
-        upd[e.n]={kg:kgs[key]||(LASTW[e.n]&&LASTW[e.n].kg)||null,fatte:done[key]||0,tot:e.s,data:new Date().toISOString().slice(0,10)};
-      }});
-    if(Object.keys(upd).length){ try{ await setDoc(doc(db,'utenti',USER.uid,'dati','pesi'), upd, {merge:true}); Object.assign(LASTW,upd);}catch(e){} }
-    document.getElementById('okz').innerHTML='<div class="okmsg">Allenamento salvato: lo zio lo vede nella sua dashboard. (Se sei offline verrà inviato appena torna la connessione.)</div>';
-  }catch(e){
-    document.getElementById('okz').innerHTML='<div class="msg">Salvataggio in coda: verrà inviato appena c\'è connessione.</div>';
-  }
+    const q=query(collection(db,'utenti',TARGET,'misure'),orderBy('creato','desc'),limit(60));
+    const snap=await getDocs(q);
+    if(snap.empty){box.innerHTML='<p>Nessuna misura registrata da tuo nipote.</p>';return;}
+    const rows=[]; snap.forEach(d=>rows.push(d.data()));
+    const asc=[...rows].reverse();
+    const pesoPts=asc.filter(r=>r.peso).map(r=>({d:r.data,v:r.peso}));
+    const vitaPts=asc.filter(r=>r.vita).map(r=>({d:r.data,v:r.vita}));
+    let h='<h3 style="margin:6px 0">Peso (kg)</h3>'+svgChart(pesoPts,'#a32a2a',' ');
+    h+='<h3 style="margin:14px 0 6px">Vita (cm)</h3>'+svgChart(vitaPts,'#9c7400',' ');
+    h+='<table class="mistab"><tr><th>Data</th><th>Peso</th><th>Vita</th><th>Altezza</th><th>Var. peso</th></tr>';
+    rows.forEach((r,i)=>{
+      const prev=rows[i+1]; let tr='—';
+      if(prev&&r.peso&&prev.peso){const d=r.peso-prev.peso;tr=`<span class="${d<0?'dn':(d>0?'up':'')}">${d>0?'+':''}${d.toFixed(1)}</span>`;}
+      h+=`<tr><td>${r.data}${r.note?'<br><small style="color:#888">'+r.note+'</small>':''}</td>
+        <td>${r.peso?r.peso+' kg':'—'}</td><td>${r.vita?r.vita+' cm':'—'}</td>
+        <td>${r.altezza?r.altezza+' cm':'—'}</td><td>${tr}</td></tr>`;
+    });
+    box.innerHTML=h+'</table>';
+  }catch(e){box.innerHTML='<p>Errore: '+e.message+'</p>';}
 }
-window.tick=function(j,s){
-  const key=day+'-'+j, e=DATA[day].ex[j];
-  done[key]=(done[key]||0)===s+1?s:s+1;
-  render();
-  if((done[key]||0)>0 && (done[key]||0)<e.s) startTimer(e.rs,e.n);
+async function loadLog(){
+  const box=document.getElementById('loglist');
+  try{
+    const q=query(collection(db,'utenti',TARGET,'allenamenti'),orderBy('creato','desc'),limit(60));
+    const snap=await getDocs(q);
+    if(snap.empty){box.innerHTML='<p>Nessun allenamento salvato finora.</p>';return;}
+    // grafico carichi per esercizio
+    window._sessions=[]; snap.forEach(dc=>window._sessions.push(dc.data()));
+    const nomi=[...new Set(window._sessions.flatMap(s=>(s.esercizi||[]).filter(e=>e.kg).map(e=>e.n)))];
+    let h='';
+    if(nomi.length){
+      h+='<label style="display:block;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:#6a6d70;margin:4px 0 3px">Andamento carico</label>';
+      h+='<select id="exsel" onchange="chartEx()" style="margin-bottom:8px">'+nomi.map(n=>`<option>${n}</option>`).join('')+'</select>';
+      h+='<div id="exchart"></div>';
+    }
+    window._sessions.forEach(s=>{
+      const pct=s.tot?Math.round(100*s.fatte/s.tot):0;
+      const badge=pct>=90?'ok':'mid';
+      h+=`<div class="sess"><div class="h"><span>${s.data} — ${s.giorno}${s.gruppo?(' · '+s.gruppo):''}</span>
+        <span class="badge ${badge}">${s.fatte}/${s.tot} serie</span></div>
+        <div class="sub">${s.utente||''}</div>
+        <table>${(s.esercizi||[]).map(e=>`<tr><td>${e.n}</td><td>${e.fatte}/${e.tot}</td><td>${e.kg?e.kg+' kg':'—'}</td></tr>`).join('')}</table>
+      </div>`;
+    });
+    box.innerHTML=h;
+    if(document.getElementById('exsel')) chartEx();
+  }catch(e){box.innerHTML='<p>Errore nel caricamento: '+e.message+'</p>';}
 }
-function ytId(u){const m=String(u).match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{6,})/);return m?m[1]:null;}
-window.playVideo=function(j){
-  const e=DATA[day].ex[j], box=document.getElementById('vid-'+day+'-'+j);
-  if(!box) return;
-  if(box.classList.contains('show')){box.classList.remove('show');box.innerHTML='';if(box._fb){box._fb.remove();box._fb=null;}return;}
-  if(/\.(mp4|webm|mov)(\?|$)/i.test(e.v)){box.innerHTML=`<video src="${e.v}" controls playsinline></video>`;box.classList.add('show');return;}
-  const id=ytId(e.v);
-  if(!id || location.protocol==='file:'){ if(e.v) window.open(e.v,'_blank'); return; }
-  box.innerHTML=`<iframe src="https://www.youtube.com/embed/${id}?rel=0&playsinline=1" allow="encrypted-media; fullscreen; picture-in-picture" allowfullscreen referrerpolicy="origin"></iframe>`;
-  box.classList.add('show');
-  const fb=document.createElement('div');fb.className='vidfb';
-  fb.innerHTML=`Se il player resta vuoto: <a href="${e.v}" target="_blank">apri su YouTube</a>`;
-  box.after(fb); box._fb=fb;
+window.chartEx=function(){
+  const n=document.getElementById('exsel').value;
+  const pts=[...window._sessions].reverse()
+    .map(s=>{const e=(s.esercizi||[]).find(x=>x.n===n&&x.kg);return e?{d:s.data,v:parseFloat(e.kg)}:null;})
+    .filter(Boolean);
+  document.getElementById('exchart').innerHTML=svgChart(pts,'#a32a2a',' kg');
 }
-// ---------- TIMER ----------
-let T=null,left=0,total=0;
-const bar=document.getElementById('bar'),tval=document.getElementById('tval'),
-      tname=document.getElementById('tname'),fgc=document.querySelector('.fgc');
-window.startTimer=function(sec,name){clearInterval(T);left=sec;total=sec;
-  tname.textContent='Recupero: '+name;bar.classList.add('show');draw();
-  T=setInterval(()=>{left--;draw();if(left<=0){clearInterval(T);beep();
-    if(navigator.vibrate)navigator.vibrate([200,100,200]);tval.textContent='VIA!';}},1000);}
-function draw(){const m=Math.floor(Math.max(left,0)/60),s=Math.max(left,0)%60;
-  tval.textContent=m+':'+String(s).padStart(2,'0');
-  fgc.style.strokeDashoffset=138.2*(1-Math.max(left,0)/total);}
-document.getElementById('plus').onclick=()=>{left+=30;total=Math.max(total,left);draw();
-  if(!T){T=setInterval(()=>{left--;draw();if(left<=0){clearInterval(T);T=null;beep();tval.textContent='VIA!';}},1000);}};
-document.getElementById('stop').onclick=()=>{clearInterval(T);T=null;bar.classList.remove('show');};
-function beep(){try{const ctx=new (window.AudioContext||window.webkitAudioContext)();
- [0,0.25,0.5].forEach(t=>{const o=ctx.createOscillator(),g=ctx.createGain();
-  o.connect(g);g.connect(ctx.destination);o.frequency.value=880;
-  g.gain.setValueAtTime(.4,ctx.currentTime+t);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+t+.2);
-  o.start(ctx.currentTime+t);o.stop(ctx.currentTime+t+.2);});}catch(e){}}
-if('serviceWorker' in navigator && location.protocol!=='file:'){navigator.serviceWorker.register('sw.js');}
 </script></body></html>
