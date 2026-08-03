@@ -1,0 +1,44 @@
+AUTOMAZIONE DEL SETUP
+=====================
+
+COSA FANNO GLI SCRIPT
+- setup.sh     : configura tutto da zero (progetto Firebase, database, regole,
+                 utenti con password, config.js, repository GitHub, Pages).
+- aggiorna.sh  : dopo modifiche ai file, alza la versione della cache e
+                 ripubblica online con un comando.
+
+PREREQUISITI (da installare una volta)
+- Node.js 18+   -> nodejs.org
+- Git           -> git-scm.com
+- GitHub CLI    -> cli.github.com   (su Mac: brew install gh)
+  (Firebase CLI viene installato dallo script)
+
+COME SI USA
+1. Copia setup.sh e aggiorna.sh DENTRO la cartella dell'app
+   (quella con index.html, admin.html, firestore.rules...).
+2. Apri il Terminale in quella cartella ed esegui:
+        bash setup.sh
+3. Rispondi alle domande (email e password tue e di tuo nipote, nome
+   progetto, nome repository). Due volte si aprira' il browser per il
+   login a Google e a GitHub: e' normale.
+4. Alla fine lo script stampa gli indirizzi dell'app e della dashboard.
+
+I DUE PASSI CHE RESTANO MANUALI (sono consensi, non comandi)
+a) Console Firebase -> Authentication -> Sign-in method -> abilita
+   "Email/password". Se lo fai PRIMA di lanciare lo script, la creazione
+   degli utenti riesce al primo colpo.
+b) Authentication -> Settings -> Authorized domains -> aggiungi
+   TUONOME.github.io  (senza questo il login dal sito viene rifiutato).
+
+SE QUALCOSA VA STORTO
+- Lo script e' ripetibile: se si interrompe, rilancialo. I passi gia'
+  fatti vengono saltati con un messaggio.
+- "permission denied" su Firebase: rifai  firebase login
+- Gli utenti non vengono creati: e' il punto (a) qui sopra, abilitalo e
+  rilancia solo quella parte con  bash setup.sh
+- Pages non attivo: GitHub -> repository -> Settings -> Pages -> Branch main.
+
+AGGIORNAMENTI FUTURI
+Modifichi un file (o ne sostituisci una versione nuova) e lanci:
+        bash aggiorna.sh
+Non serve toccare Firebase: scheda, note e dati restano nel database.

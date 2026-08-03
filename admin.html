@@ -1,0 +1,804 @@
+<!DOCTYPE html><html lang="it"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dashboard scheda</title>
+<style>
+:root{--ink:#24272b;--bg:#e9eae6;--red:#a32a2a;--line:#d4d5d0}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,'Segoe UI',Roboto,sans-serif;padding-bottom:90px}
+header{background:var(--ink);color:#fff;padding:14px 16px}
+header h1{margin:0;font-size:15px;letter-spacing:.16em;text-transform:uppercase;font-weight:900}
+.topnav{display:flex;gap:8px;margin-top:10px}
+.tn{flex:1;text-align:center;border:2px solid #4a4d52;color:#c8cacd;border-radius:999px;padding:8px 0;font-weight:800;font-size:13px;cursor:pointer}
+.tn.on{background:var(--red);border-color:var(--red);color:#fff}
+.wrap{max-width:760px;margin:0 auto;padding:12px}
+.day{background:#fff;border:1px solid var(--line);border-radius:14px;margin:12px 0;padding:12px 14px}
+.dayhead{display:flex;gap:8px;align-items:center}
+.dayhead input{flex:1}
+.ex{border:1px solid var(--line);border-radius:10px;background:#fafaf6;padding:10px 12px;margin:10px 0}
+label{display:block;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:#6a6d70;margin:8px 0 2px}
+input,textarea,select{width:100%;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:14px;font-family:inherit;background:#fff}
+textarea{min-height:64px;line-height:1.4}
+.grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+button{border:0;border-radius:9px;padding:9px 13px;font-weight:800;font-size:13.5px;cursor:pointer}
+.add{background:#f0efe9;border:1px dashed #b9bab4;color:var(--ink);width:100%;margin-top:8px}
+.del{background:#fdeaea;color:var(--red);float:right;padding:5px 10px;font-size:12px}
+.updown{background:#f0efe9;color:var(--ink);padding:5px 10px;font-size:12px;margin-right:4px}
+#save{position:fixed;left:0;right:0;bottom:0;background:var(--ink);padding:12px 16px;display:flex;gap:10px;z-index:10}
+#save button{flex:1;padding:13px 0;font-size:15px;background:var(--red);color:#fff}
+h3{margin:0}
+.overlay{position:fixed;inset:0;background:var(--bg);z-index:50;display:flex;align-items:center;justify-content:center;padding:20px}
+.login{width:100%;max-width:340px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px}
+.login h2{margin:0 0 14px;font-size:18px}
+.login button{width:100%;margin-top:16px;padding:13px 0;font-size:15px;background:var(--red);color:#fff}
+.err2{color:var(--red);font-size:13px;margin-top:10px;font-weight:700}
+.okmsg{position:fixed;bottom:74px;left:16px;right:16px;background:#e4f3e8;border-left:3px solid #1f7a3d;padding:10px 12px;font-size:13.5px;border-radius:0 8px 8px 0;z-index:11}
+/* storico */
+.sess{background:#fff;border:1px solid var(--line);border-radius:12px;margin:10px 0;padding:12px 14px}
+.sess .h{display:flex;justify-content:space-between;font-weight:800}
+.sess .sub{font-size:12.5px;color:#6a6d70;margin:2px 0 8px}
+.sess table{width:100%;border-collapse:collapse;font-size:13.5px}
+.sess td{padding:4px 6px;border-top:1px solid #eee}
+.sess td:nth-child(2),.sess td:nth-child(3){text-align:right;white-space:nowrap}
+.badge{font-size:11px;font-weight:900;border-radius:6px;padding:2px 7px}
+.badge.ok{background:#e4f3e8;color:#1f7a3d}
+.badge.mid{background:#fff7e0;color:#9c7400}
+
+.mistab{width:100%;border-collapse:collapse;margin:10px 0;font-size:13.5px;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.mistab th,.mistab td{border-bottom:1px solid #eee;padding:9px 10px;text-align:right}
+.mistab th{background:#f0ece4;font-size:11px;letter-spacing:.04em;text-transform:uppercase}
+.mistab td:first-child,.mistab th:first-child{text-align:left}
+.dn{color:#1f7a3d;font-weight:800}.up{color:#a35a2a;font-weight:800}
+</style></head><body>
+<div class="overlay" id="loginov"><div class="login">
+ <h2>Dashboard — accesso</h2>
+ <label>Email</label><input id="lemail" type="email">
+ <label>Password</label><input id="lpass" type="password">
+ <button id="lbtn">Entra</button><div class="err2" id="lerr"></div>
+</div></div>
+<header><h1>Dashboard scheda</h1>
+ <div style="margin-top:10px"><select id="whoSel" onchange="cambiaPersona()" style="width:100%;padding:9px;border-radius:9px;font-size:14px;font-weight:700"></select></div>
+ <div class="topnav" style="margin-top:10px"><div class="tn on" id="nav0">Scheda</div><div class="tn" id="nav1">Allenamenti</div><div class="tn" id="nav2">Misure</div></div>
+</header>
+<div class="wrap" id="pgScheda">
+ <div class="day" style="border-left:4px solid #d9a400">
+   <label>Nota per tuo nipote (compare in cima alla sua app)</label>
+   <textarea id="nota" placeholder="es. Questa settimana cura la discesa nell'hack squat. Bravo per venerdì!"></textarea>
+   <button class="add" style="border-style:solid;background:#fff7e0" onclick="salvaNota()">Invia nota</button>
+ </div>
+ <label>Titolo scheda</label><input id="titolo">
+ <div id="days"></div>
+ <button class="add" onclick="addDay()">+ Aggiungi giorno</button>
+</div>
+<div class="wrap" id="pgLog" style="display:none"><div id="loglist">Caricamento…</div></div>
+<div class="wrap" id="pgMis" style="display:none"><div id="mislist">Caricamento…</div></div>
+<div id="save"><button onclick="salvaScheda()">&#128190; Pubblica la scheda</button></div>
+<div id="ok"></div>
+<script src="immagini.js"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { firebaseConfig } from "./config.js";
+const fapp=initializeApp(firebaseConfig), auth=getAuth(fapp), db=getFirestore(fapp);
+
+const DEFAULT_SCHEDA={
+ "titolo": "La mia scheda · 4 giorni",
+ "aggiornata": "2026-07-08",
+ "giorni": [
+  {
+   "d": "Lunedì",
+   "t": "Petto e Schiena",
+   "ex": [
+    {
+     "n": "Lat machine con triangolo",
+     "s": 3,
+     "r": "8-12",
+     "rl": "2-3 min",
+     "rs": 150,
+     "img": "lat",
+     "c": [
+      "Petto in fuori, spalle basse",
+      "Tira allo sterno chiudendo le scapole",
+      "Risali lento a braccia distese"
+     ],
+     "st": [
+      "Regola il fermo per le ginocchia in modo da restare bloccato al sedile.",
+      "Aggancia il triangolo al cavo alto, presa neutra (palmi che si guardano).",
+      "Siediti con petto in fuori, spalle basse, curva lombare naturale.",
+      "Tira il triangolo verso lo sterno piegando i gomiti e inclinando leggermente indietro il busto.",
+      "Fermati un istante a scapole chiuse, poi risali lentamente fino a braccia distese.",
+      "Espira tirando, inspira nel ritorno."
+     ],
+     "e": "Dondolare il busto per slancio, tirare solo di braccia, ritorno incontrollato. Mai dietro la nuca.",
+     "v": "https://www.youtube.com/watch?v=oqfWu0hgKmA"
+    },
+    {
+     "n": "Chest press inclinata",
+     "s": 3,
+     "r": "8-12",
+     "rl": "2-3 min",
+     "rs": 150,
+     "img": "chest",
+     "c": [
+      "Maniglie all'altezza del petto",
+      "Schiena sullo schienale",
+      "Non bloccare i gomiti"
+     ],
+     "st": [
+      "Regola il sedile: impugnature all'altezza del petto, non delle spalle.",
+      "Schiena e testa aderenti allo schienale, piedi a terra, scapole leggermente addotte.",
+      "Spingi in avanti/alto fino quasi a distendere le braccia (gomiti mai bloccati).",
+      "Torna lentamente finché le mani sono in linea con il petto.",
+      "Espira in spinta, inspira in ritorno."
+     ],
+     "e": "Staccare la schiena dallo schienale, ROM ridotto, gomiti completamente aperti di lato (tienili a ~75°).",
+     "v": "https://www.youtube.com/watch?v=sE0GTlKJeGE"
+    },
+    {
+     "n": "Pulley con presa prona",
+     "s": 3,
+     "r": "8-12",
+     "rl": "2 min",
+     "rs": 120,
+     "img": "pulley",
+     "c": [
+      "Busto verticale, ginocchia semiflesse",
+      "Gomiti dietro, scapole chiuse",
+      "Ritorno lento"
+     ],
+     "st": [
+      "Siediti al pulley basso, piedi sugli appoggi, ginocchia semiflesse (mai tese).",
+      "Presa prona sulla sbarra, larghezza spalle o poco più.",
+      "Busto perpendicolare al pavimento, petto in fuori, lombare naturale.",
+      "Tira verso la parte alta dell'addome portando i gomiti dietro il busto e chiudendo le scapole.",
+      "Tieni 1-2 secondi, poi torna lentamente a braccia distese senza farti trascinare avanti.",
+      "Espira tirando, inspira nel ritorno."
+     ],
+     "e": "Oscillare il busto, spalle verso le orecchie, ritorno veloce.",
+     "v": "https://www.youtube.com/watch?v=BocFDOhppQ8"
+    },
+    {
+     "n": "Chest press",
+     "s": 2,
+     "r": "8-12",
+     "rl": "2 min",
+     "rs": 120,
+     "img": "chest",
+     "c": [
+      "Maniglie ai pettorali",
+      "Gomiti a ~75° dal busto",
+      "Ritorno in 2-3 secondi"
+     ],
+     "st": [
+      "Regola il sedile con le maniglie all'altezza dei pettorali.",
+      "Schiena aderente, angolo omero-busto circa 75°.",
+      "Spingi quasi a braccia distese, torna con le mani in linea al petto.",
+      "Espira in spinta, inspira in ritorno."
+     ],
+     "e": "Gli stessi della versione inclinata.",
+     "v": "https://www.youtube.com/watch?v=lAkcFUulVn4"
+    },
+    {
+     "n": "Alzate laterali con manubri",
+     "s": 2,
+     "r": "12-15",
+     "rl": "1,5 min",
+     "rs": 90,
+     "img": "alzate",
+     "c": [
+      "Gomito flesso e fisso",
+      "Fino all'altezza spalle, non oltre",
+      "Carico leggero"
+     ],
+     "st": [
+      "In piedi, piedi larghezza spalle, ginocchia morbide, manubri ai fianchi.",
+      "Gomiti leggermente flessi, angolo fisso, spalle basse.",
+      "Alza le braccia lateralmente e leggermente avanti (30-40°) fino all'altezza delle spalle, con leggera extrarotazione dell'omero.",
+      "Scendi lentamente fermandoti poco prima delle cosce per mantenere tensione."
+     ],
+     "e": "Slancio con la schiena, alzare le spalle, polsi piegati, salire oltre i 90°.",
+     "v": "https://www.youtube.com/watch?v=W3a6S3gRmaU"
+    }
+   ]
+  },
+  {
+   "d": "Martedì",
+   "t": "Spalle e Braccia",
+   "ex": [
+    {
+     "n": "Shoulder press",
+     "s": 3,
+     "r": "8-12",
+     "rl": "2-3 min",
+     "rs": 150,
+     "img": "shoulder",
+     "c": [
+      "Maniglie ad altezza spalle/mento",
+      "Gomiti leggermente avanti",
+      "Discesa completa"
+     ],
+     "st": [
+      "Regola il sedile: maniglie all'altezza spalle/mento.",
+      "Schiena aderente allo schienale, piedi a terra, core attivo.",
+      "Gomiti leggermente avanti rispetto al busto, non aperti di lato.",
+      "Spingi verso l'alto fino quasi a distendere le braccia.",
+      "Scendi lentamente e in modo completo, spalle basse.",
+      "Espira spingendo, inspira scendendo."
+     ],
+     "e": "Inarcare la lombare staccandola dallo schienale, ROM parziale, gomiti dietro la linea del busto.",
+     "v": "https://www.youtube.com/watch?v=RFxZrhumUXU"
+    },
+    {
+     "n": "Peck back",
+     "s": 3,
+     "r": "12-15",
+     "rl": "1,5-2 min",
+     "rs": 105,
+     "img": "peck",
+     "c": [
+      "Petto sullo schienale",
+      "Gomito fisso",
+      "Apri chiudendo le scapole"
+     ],
+     "st": [
+      "Regola le maniglie in posizione posteriore (modalità reverse), sedile con maniglie all'altezza delle spalle.",
+      "Siediti al contrario, petto contro lo schienale.",
+      "Braccia semidistese davanti, gomiti leggermente flessi.",
+      "Apri le braccia all'indietro chiudendo le scapole, senza variare l'angolo del gomito.",
+      "Fermati un istante, torna lentamente."
+     ],
+     "e": "Piegare i gomiti (diventa un rematore), staccare il petto dallo schienale, slancio.",
+     "v": "https://www.youtube.com/watch?v=3RLqAh8-9Pg"
+    },
+    {
+     "n": "Face pulls",
+     "s": 2,
+     "r": "12-15",
+     "rl": "1,5 min",
+     "rs": 90,
+     "img": "facepull",
+     "c": [
+      "Corda ad altezza viso",
+      "Gomiti alti, nocche in su",
+      "Carico leggero"
+     ],
+     "st": [
+      "Aggancia la corda al cavo alto (altezza viso o poco sopra).",
+      "Presa neutra sulle estremità, un passo indietro, addome attivo, scapole basse.",
+      "Tira la corda verso il viso separando le mani ai lati della testa; gomiti alti, spalle che extraruotano (nocche verso il soffitto).",
+      "1 secondo di fermo, ritorno controllato.",
+      "Carico leggero: conta il movimento, non il peso."
+     ],
+     "e": "Troppo carico (diventa un rematore), gomiti bassi, slancio col busto. Nota: nelle immagini c'è barra/maniglia, tu usa la corda.",
+     "v": "https://www.youtube.com/watch?v=-H3AEd2S2RQ"
+    },
+    {
+     "n": "French press con EZ o manubri",
+     "s": 2,
+     "r": "10-12",
+     "rl": "1,5-2 min",
+     "rs": 105,
+     "img": "frenchpress",
+     "c": [
+      "Piega SOLO i gomiti",
+      "Gomiti stretti e fermi",
+      "Discesa 2-3 secondi"
+     ],
+     "st": [
+      "Sdraiato su panca piana con due manubri (presa neutra) o bilanciere EZ, braccia verticali sopra le spalle, scapole addotte.",
+      "Piega solo i gomiti, facendo scendere i manubri accanto alle orecchie in 2-3 secondi.",
+      "Gomiti fermi, stretti, senza aprirsi.",
+      "Estendi i gomiti risalendo alla partenza, senza muovere le spalle.",
+      "Inspira scendendo, espira risalendo."
+     ],
+     "e": "Gomiti che si aprono o si muovono, carico eccessivo (gomito delicato), muovere le spalle.",
+     "v": "https://www.youtube.com/watch?v=Rd3a4dC_bwI"
+    },
+    {
+     "n": "Curl manubri alternati",
+     "s": 3,
+     "r": "8-12",
+     "rl": "1,5-2 min",
+     "rs": 105,
+     "img": "curl",
+     "c": [
+      "Gomiti fermi ai fianchi",
+      "Ruota il palmo salendo",
+      "Scendi lento"
+     ],
+     "st": [
+      "In piedi, ginocchia morbide, manubri lungo i fianchi con presa neutra.",
+      "Gomiti fermi, aderenti al busto.",
+      "Fletti un gomito ruotando il palmo verso l'alto durante la salita (supinazione).",
+      "Fermati al picco di contrazione, scendi lentamente.",
+      "Alterna le braccia."
+     ],
+     "e": "Oscillare la schiena (carico eccessivo), gomiti che avanzano, discesa a peso morto.",
+     "v": "https://www.youtube.com/watch?v=RhVdFHcHKDE"
+    },
+    {
+     "n": "Plank",
+     "s": 3,
+     "r": "30-45\"",
+     "rl": "1 min",
+     "rs": 60,
+     "img": "plank",
+     "c": [
+      "Gomiti sotto le spalle",
+      "Linea retta testa-talloni",
+      "Respira normalmente"
+     ],
+     "st": [
+      "A terra su tappetino, appoggia gomiti e avambracci (gomiti sotto le spalle) e punte dei piedi.",
+      "Solleva il corpo formando una linea retta testa-spalle-bacino-talloni.",
+      "Contrai addome e glutei; non far scendere il bacino né alzarlo a tenda.",
+      "Sguardo a terra, collo neutro, respira normalmente.",
+      "Tieni 30-45 secondi; a 60\" facili passa a varianti più difficili."
+     ],
+     "e": "Bacino che cade (fa male alla lombare), sedere in alto, trattenere il fiato.",
+     "v": "https://www.youtube.com/watch?v=aJOB8LwFPY8"
+    }
+   ]
+  },
+  {
+   "d": "Giovedì",
+   "t": "Gambe",
+   "ex": [
+    {
+     "n": "Hack squat",
+     "s": 3,
+     "r": "8-10",
+     "rl": "3 min",
+     "rs": 180,
+     "img": "hacksquat",
+     "c": [
+      "Schiena sullo schienale",
+      "Scendi a cosce parallele",
+      "Non bloccare le ginocchia"
+     ],
+     "st": [
+      "Spalle sotto i cuscinetti, schiena e bacino aderenti allo schienale, petto in fuori.",
+      "Piedi larghezza spalle sulla pedana, punte leggermente in fuori, posizione centrale.",
+      "Sblocca le sicure e scendi lentamente fino a cosce circa parallele alla pedana.",
+      "Risali spingendo con tutto il piede, senza bloccare le ginocchia.",
+      "Inspira in discesa, espira in salita; non spingere con le braccia."
+     ],
+     "e": "Staccare bacino o schiena dallo schienale, rimbalzo in basso, talloni che si sollevano.",
+     "v": "https://www.youtube.com/watch?v=PH9uLhNr-s4"
+    },
+    {
+     "n": "Leg press singola",
+     "s": 2,
+     "r": "8-12 /gamba",
+     "rl": "2 min",
+     "rs": 120,
+     "img": "legpress",
+     "c": [
+      "Piede al centro pedana",
+      "Bacino sempre appoggiato",
+      "Ginocchio mai bloccato"
+     ],
+     "st": [
+      "Schiena e bacino ben aderenti allo schienale.",
+      "Un piede al centro della pedana, l'altro a terra o sull'appoggio.",
+      "Scendi lentamente fin dove il bacino resta appoggiato.",
+      "Spingi estendendo quasi completamente il ginocchio (mai bloccarlo).",
+      "Inspira in discesa, espira in spinta; completa una gamba, poi cambia."
+     ],
+     "e": "Bacino che si stacca in discesa, ginocchio bloccato, discesa eccessiva.",
+     "v": "https://www.youtube.com/watch?v=LMTyPl_oo38"
+    },
+    {
+     "n": "Leg curl seduto",
+     "s": 3,
+     "r": "8-12",
+     "rl": "2 min",
+     "rs": 120,
+     "img": "legcurl",
+     "c": [
+      "Fulcro in linea col ginocchio",
+      "Talloni verso il sedile",
+      "Ritorno lento"
+     ],
+     "st": [
+      "Regola la macchina: fulcro della leva in linea con il centro del ginocchio.",
+      "Rullo dietro le caviglie, cuscino che blocca le cosce, schiena appoggiata.",
+      "Da gambe distese, fletti le ginocchia portando i talloni verso il sedile.",
+      "Controlla il ritorno lentamente.",
+      "Espira flettendo, inspira nel ritorno."
+     ],
+     "e": "Fulcro non in linea col ginocchio, ritorno veloce.",
+     "v": "https://www.youtube.com/watch?v=gopI4Fbgx4w"
+    },
+    {
+     "n": "Hyperextension a 45°",
+     "s": 3,
+     "r": "10-15",
+     "rl": "1,5-2 min",
+     "rs": 105,
+     "img": "hyper",
+     "c": [
+      "Piegati dall'anca",
+      "Schiena NEUTRA",
+      "Risali in linea, non oltre"
+     ],
+     "st": [
+      "Regola il cuscino: il bordo sotto le creste iliache (sotto la pancia), anche libere.",
+      "Caviglie sotto i rulli, piedi saldi, corpo in linea, braccia al petto.",
+      "Scendi lentamente piegandoti dall'anca, schiena neutra (non srotolare la colonna).",
+      "Fermati quando senti tirare dietro le cosce.",
+      "Risali contraendo glutei e femorali fino a tornare in linea: non oltre.",
+      "Inspira scendendo, espira risalendo. Con 15 rip. facili, tieni un disco al petto."
+     ],
+     "e": "Incurvare la schiena in discesa, salire oltre la linea inarcandosi, movimento a molla.",
+     "v": "https://www.youtube.com/watch?v=76ASztmf1HA"
+    },
+    {
+     "n": "Polpacci a ginocchio esteso",
+     "s": 3,
+     "r": "10-15",
+     "rl": "1,5 min",
+     "rs": 90,
+     "img": "calf",
+     "c": [
+      "Massimo allungamento in basso",
+      "1\" di fermo in alto",
+      "Niente rimbalzi"
+     ],
+     "st": [
+      "Alla calf machine o alla pressa: avampiedi sul bordo, talloni liberi, ginocchia distese non bloccate.",
+      "Scendi con i talloni il più in basso possibile.",
+      "Spingi sulle punte fino alla massima contrazione.",
+      "1 secondo in alto, discesa lenta; niente rimbalzi.",
+      "Espira salendo, inspira scendendo."
+     ],
+     "e": "ROM parziale (l'errore più diffuso), rimbalzi, ginocchia che si piegano.",
+     "v": "https://www.youtube.com/watch?v=9HbbuUPsdPw"
+    },
+    {
+     "n": "Leg extension (opzionale)",
+     "s": 2,
+     "r": "12-15",
+     "rl": "1,5 min",
+     "rs": 90,
+     "img": "legext",
+     "c": [
+      "Solo se le ginocchia stanno bene",
+      "1\" di fermo in alto",
+      "Discesa lenta"
+     ],
+     "st": [
+      "Solo se hai ancora energie e le ginocchia non danno fastidio.",
+      "Fulcro in linea col centro del ginocchio, rullo sopra le caviglie.",
+      "Estendi le gambe in modo controllato, 1 secondo di contrazione.",
+      "Scendi lentamente a ginocchio flesso.",
+      "Espira estendendo, inspira scendendo."
+     ],
+     "e": "Calciare il peso con slancio, sollevare il bacino, ritorno incontrollato.",
+     "v": "https://www.youtube.com/watch?v=wRSr98kKUsg"
+    }
+   ]
+  },
+  {
+   "d": "Venerdì",
+   "t": "Upper Body",
+   "ex": [
+    {
+     "n": "Lat machine prona",
+     "s": 3,
+     "r": "8-12",
+     "rl": "2-3 min",
+     "rs": 150,
+     "img": "lat",
+     "c": [
+      "Presa larga prona",
+      "Guida coi gomiti",
+      "Mai dietro la nuca"
+     ],
+     "st": [
+      "Impugna la sbarra con presa prona, mani più larghe delle spalle.",
+      "Siediti bloccato sotto i fermi, petto in fuori, lombare naturale.",
+      "Tira la sbarra verso lo sterno guidando con i gomiti, leggero arretramento del busto.",
+      "Chiudi le scapole in basso, risali lentamente a braccia distese.",
+      "Espira tirando, inspira risalendo."
+     ],
+     "e": "Dondolarsi, tirare verso la pancia, portarla dietro la nuca (vietato).",
+     "v": "https://www.youtube.com/watch?v=P8QKoy5sjv8"
+    },
+    {
+     "n": "Chest press inclinata",
+     "s": 2,
+     "r": "8-12",
+     "rl": "2 min",
+     "rs": 120,
+     "img": "chest",
+     "c": [
+      "Come il lunedì",
+      "Una serie in meno",
+      "ROM completo"
+     ],
+     "st": [
+      "Identica al lunedì, con una serie in meno: seconda frequenza settimanale per il petto.",
+      "Schiena sullo schienale, spinta quasi a braccia distese, ritorno lento."
+     ],
+     "e": "Gli stessi del lunedì.",
+     "v": "https://www.youtube.com/watch?v=sE0GTlKJeGE"
+    },
+    {
+     "n": "Alzate laterali al cavo",
+     "s": 2,
+     "r": "12-15",
+     "rl": "1,5 min",
+     "rs": 90,
+     "img": "alzate",
+     "c": [
+      "Cavo basso, mano opposta",
+      "Gomito fisso",
+      "Non appoggiare il pacco"
+     ],
+     "st": [
+      "Cavo in basso; di fianco alla colonna, impugna la maniglia con la mano opposta (cavo davanti al corpo).",
+      "Ginocchia morbide, busto fermo, mano libera in appoggio.",
+      "Alza il braccio lateralmente fino all'altezza della spalla, gomito leggermente flesso e fisso.",
+      "Scendi lentamente senza far toccare il pacco pesi.",
+      "Completa le ripetizioni, cambia lato."
+     ],
+     "e": "Slancio, tirare di trapezio, ROM oltre i 90°.",
+     "v": "https://www.youtube.com/watch?v=IiGnKYInkSM"
+    },
+    {
+     "n": "Pushdown con barra",
+     "s": 3,
+     "r": "10-12",
+     "rl": "1,5-2 min",
+     "rs": 105,
+     "img": "pushdown",
+     "c": [
+      "Gomiti fermi ai fianchi",
+      "1\" di fermo in basso",
+      "Polsi rigidi"
+     ],
+     "st": [
+      "Barra al cavo alto, alla massima altezza.",
+      "In piedi, busto leggermente inclinato avanti, addome attivo.",
+      "Presa prona, gomiti fermi e aderenti ai fianchi.",
+      "Estendi i gomiti fino a braccia distese, 1 secondo di contrazione.",
+      "Risali lentamente fino ad avambracci paralleli al suolo; i gomiti non si muovono.",
+      "Espira spingendo, inspira risalendo."
+     ],
+     "e": "Gomiti che si allargano o avanzano, spingere col peso del corpo, polsi piegati.",
+     "v": "https://www.youtube.com/watch?v=1eL7reY-6LQ"
+    },
+    {
+     "n": "Curl EZ o manubri",
+     "s": 2,
+     "r": "10-12",
+     "rl": "1,5-2 min",
+     "rs": 105,
+     "img": "curl",
+     "c": [
+      "Gomiti fermi ai fianchi",
+      "Busto immobile",
+      "Discesa 2-3 secondi"
+     ],
+     "st": [
+      "In piedi, ginocchia morbide, bilanciere EZ sulle curve (o due manubri).",
+      "Gomiti fermi lungo i fianchi.",
+      "Fletti i gomiti fino al picco di contrazione senza muovere il busto.",
+      "Scendi lentamente (2-3 secondi) fino a braccia distese.",
+      "Espira salendo, inspira scendendo."
+     ],
+     "e": "Oscillare la schiena, gomiti che avanzano, discesa a peso morto.",
+     "v": "https://www.youtube.com/watch?v=RhVdFHcHKDE"
+    },
+    {
+     "n": "Crunch a terra",
+     "s": 3,
+     "r": "12-15",
+     "rl": "1 min",
+     "rs": 60,
+     "img": "crunch",
+     "c": [
+      "Lombare sempre a terra",
+      "Solleva solo le spalle",
+      "Non tirare la testa"
+     ],
+     "st": [
+      "Sdraiato supino, ginocchia piegate, piedi a terra, mani ai lati della testa (non a tirare la nuca).",
+      "Solleva spalle e parte alta della schiena arrotolando il busto: la lombare resta a terra.",
+      "Espira salendo, contrai l'addome 1 secondo.",
+      "Scendi lentamente inspirando, senza appoggiare del tutto la testa.",
+      "Movimento corto: bastano 15-20 cm."
+     ],
+     "e": "Tirare la testa con le mani, staccare la lombare (diventa un sit-up), slancio.",
+     "v": "https://www.youtube.com/watch?v=Iep9ffXKQHw"
+    }
+   ]
+  }
+ ]
+};
+let S=null, TARGET=null, UTENTI=[];
+
+document.getElementById('lbtn').onclick=async()=>{
+  try{await setPersistence(auth,browserLocalPersistence);
+      await signInWithEmailAndPassword(auth,document.getElementById('lemail').value.trim(),document.getElementById('lpass').value);}
+  catch(e){document.getElementById('lerr').textContent='Accesso non riuscito.';}
+};
+onAuthStateChanged(auth,async u=>{
+  if(!u){document.getElementById('loginov').style.display='flex';return;}
+  document.getElementById('loginov').style.display='none';
+  // elenco persone (registrate dalle app al primo accesso)
+  try{
+    const us=await getDocs(collection(db,'utenti'));
+    UTENTI=[]; us.forEach(d=>{const v=d.data(); UTENTI.push({uid:d.id, nome:v.nome||v.email||d.id});});
+  }catch(e){ UTENTI=[]; }
+  const sel=document.getElementById('whoSel'); sel.innerHTML='';
+  if(!UTENTI.length){ sel.innerHTML='<option>Nessun utente ha ancora aperto l\'app</option>'; }
+  UTENTI.forEach(x=>{const o=document.createElement('option');o.value=x.uid;o.textContent=x.nome;sel.appendChild(o);});
+  TARGET = UTENTI.length?UTENTI[0].uid:null;
+  await caricaPersona();
+});
+window.cambiaPersona=async()=>{ TARGET=document.getElementById('whoSel').value; await caricaPersona(); };
+async function caricaPersona(){
+  if(!TARGET){S=JSON.parse(JSON.stringify(DEFAULT_SCHEDA));document.getElementById('titolo').value=S.titolo||'';render();return;}
+  const snap=await getDoc(doc(db,'utenti',TARGET,'dati','scheda'));
+  S=snap.exists()?snap.data():JSON.parse(JSON.stringify(DEFAULT_SCHEDA));
+  document.getElementById('titolo').value=S.titolo||'';
+  try{const ns=await getDoc(doc(db,'utenti',TARGET,'dati','nota'));
+      document.getElementById('nota').value=ns.exists()?(ns.data().testo||''):'';}catch(e){}
+  render(); loadLog(); if(document.getElementById('pgMis').style.display!=='none')loadMis();
+}
+
+// ---- navigazione ----
+document.getElementById('nav0').onclick=()=>{nav(0)};
+document.getElementById('nav1').onclick=()=>{nav(1)};
+document.getElementById('nav2').onclick=()=>{nav(2)};
+function nav(i){
+  [0,1,2].forEach(k=>document.getElementById('nav'+k).classList.toggle('on',i===k));
+  document.getElementById('pgScheda').style.display=i===0?'block':'none';
+  document.getElementById('save').style.display=i===0?'flex':'none';
+  document.getElementById('pgLog').style.display=i===1?'block':'none';
+  document.getElementById('pgMis').style.display=i===2?'block':'none';
+  if(i===2) loadMis();
+}
+
+// ---- editor (come prima, ma salva su Firestore) ----
+function opt(sel){return Object.keys(IMG_LABELS).map(k=>`<option value="${k}" ${k===sel?'selected':''}>${IMG_LABELS[k]}</option>`).join('');}
+function esc(s){return String(s??'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
+window.lines=v=>v.split('\n').map(x=>x.trim()).filter(Boolean);
+window.render=function(){
+  const R=document.getElementById('days');R.innerHTML='';
+  S.giorni.forEach((d,di)=>{
+    const dv=document.createElement('div');dv.className='day';
+    let exh='';
+    d.ex.forEach((e,ei)=>{
+      exh+=`<div class="ex">
+        <button class="del" onclick="delEx(${di},${ei})">Elimina</button>
+        <button class="updown" onclick="move(${di},${ei},-1)">&#8593;</button><button class="updown" onclick="move(${di},${ei},1)">&#8595;</button>
+        <label>Nome esercizio</label><input value="${esc(e.n)}" onchange="S.giorni[${di}].ex[${ei}].n=this.value">
+        <div class="grid">
+          <div><label>Serie</label><input type="number" min="1" max="10" value="${e.s}" onchange="S.giorni[${di}].ex[${ei}].s=+this.value"></div>
+          <div><label>Ripetizioni</label><input value="${esc(e.r)}" onchange="S.giorni[${di}].ex[${ei}].r=this.value"></div>
+          <div><label>Recupero (testo)</label><input value="${esc(e.rl)}" onchange="S.giorni[${di}].ex[${ei}].rl=this.value"></div>
+          <div><label>Recupero (secondi)</label><input type="number" min="15" step="15" value="${e.rs}" onchange="S.giorni[${di}].ex[${ei}].rs=+this.value"></div>
+        </div>
+        <div class="grid3">
+          <div><label>Immagine (libreria)</label><select onchange="S.giorni[${di}].ex[${ei}].img=this.value">${opt(e.img||'')}</select></div>
+          <div style="grid-column:span 2"><label>Oppure URL immagine esterna</label><input value="${esc(e.imgurl||'')}" onchange="S.giorni[${di}].ex[${ei}].imgurl=this.value" placeholder="https://..."></div>
+        </div>
+        <label>Punti rapidi (uno per riga)</label><textarea onchange="S.giorni[${di}].ex[${ei}].c=lines(this.value)">${(e.c||[]).join('\n')}</textarea>
+        <label>Come si esegue (un passo per riga)</label><textarea onchange="S.giorni[${di}].ex[${ei}].st=lines(this.value)">${(e.st||[]).join('\n')}</textarea>
+        <label>Errori da evitare</label><textarea onchange="S.giorni[${di}].ex[${ei}].e=this.value">${esc(e.e||'')}</textarea>
+        <label>Video (YouTube o .mp4)</label><input value="${esc(e.v||'')}" onchange="S.giorni[${di}].ex[${ei}].v=this.value">
+        <label style="display:flex;align-items:center;gap:8px;margin-top:10px;text-transform:none;font-size:13.5px;color:#1c1c1c;font-weight:700">
+          <input type="checkbox" style="width:auto" ${e.rv?'checked':''} onchange="S.giorni[${di}].ex[${ei}].rv=this.checked">
+          Richiedi un video della sua esecuzione
+        </label>
+      </div>`;
+    });
+    dv.innerHTML=`<div class="dayhead"><h3>Giorno ${di+1}</h3>
+      <input value="${esc(d.d)}" placeholder="Nome (es. Lunedì)" onchange="S.giorni[${di}].d=this.value">
+      <input value="${esc(d.t||'')}" placeholder="Gruppo" onchange="S.giorni[${di}].t=this.value">
+      <button class="del" onclick="delDay(${di})">Elimina giorno</button></div>
+      ${exh}<button class="add" onclick="addEx(${di})">+ Aggiungi esercizio</button>`;
+    R.appendChild(dv);
+  });
+}
+window.addDay=()=>{S.giorni.push({d:'Nuovo giorno',t:'',ex:[]});render();};
+window.delDay=i=>{if(confirm('Eliminare il giorno?')){S.giorni.splice(i,1);render();}};
+window.addEx=di=>{S.giorni[di].ex.push({n:'Nuovo esercizio',s:3,r:'8-12',rl:'2 min',rs:120,img:'',imgurl:'',c:[],st:[],e:'',v:''});render();};
+window.delEx=(di,ei)=>{if(confirm('Eliminare questo esercizio?')){S.giorni[di].ex.splice(ei,1);render();}};
+window.move=(di,ei,dir)=>{const a=S.giorni[di].ex,j=ei+dir;if(j<0||j>=a.length)return;[a[ei],a[j]]=[a[j],a[ei]];render();};
+window.salvaNota=async()=>{
+  try{ await setDoc(doc(db,'utenti',TARGET,'dati','nota'),
+    {testo:document.getElementById('nota').value.trim(),
+     data:new Date().toLocaleDateString('it-IT')});
+    flash('Nota inviata: la vede all\'apertura dell\'app. (Campo vuoto = nota rimossa.)');}
+  catch(e){flash('Errore: '+e.message);}
+};
+window.salvaScheda=async()=>{
+  S.titolo=document.getElementById('titolo').value;
+  S.aggiornata=new Date().toISOString().slice(0,10);
+  try{ await setDoc(doc(db,'utenti',TARGET,'dati','scheda'), S);
+    flash('Scheda pubblicata: tuo nipote la riceve alla prossima apertura dell\'app.');}
+  catch(e){ flash('Errore di salvataggio: '+e.message); }
+};
+function flash(m){const d=document.getElementById('ok');d.innerHTML=`<div class="okmsg">${m}</div>`;
+  setTimeout(()=>d.innerHTML='',4000);}
+
+// ---- storico allenamenti ----
+function svgChart(pts,color,unit){
+  if(pts.length<2) return '<p style="color:#888;font-size:13px">Servono almeno 2 misurazioni per il grafico.</p>';
+  const W=680,H=170,P=34;
+  const xs=pts.map((_,i)=>P+i*(W-2*P)/(pts.length-1));
+  const vals=pts.map(p=>p.v);
+  const mn=Math.min(...vals),mx=Math.max(...vals),rg=(mx-mn)||1;
+  const ys=vals.map(v=>H-P-(v-mn)/rg*(H-2*P));
+  let s=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;background:#fff;border:1px solid #d4d5d0;border-radius:12px">`;
+  s+=`<polyline fill="none" stroke="${color}" stroke-width="3" stroke-linejoin="round" points="${xs.map((x,i)=>x+','+ys[i]).join(' ')}"/>`;
+  pts.forEach((p,i)=>{s+=`<circle cx="${xs[i]}" cy="${ys[i]}" r="4" fill="${color}"/>`;
+    s+=`<text x="${xs[i]}" y="${ys[i]-9}" font-size="11" text-anchor="middle" fill="#444" font-weight="700">${p.v}${unit}</text>`;
+    s+=`<text x="${xs[i]}" y="${H-10}" font-size="9.5" text-anchor="middle" fill="#888">${p.d.slice(5)}</text>`;});
+  return s+'</svg>';
+}
+async function loadMis(){
+  const box=document.getElementById('mislist');
+  if(!TARGET){box.innerHTML='<p>Nessun utente.</p>';return;}
+  try{
+    const q=query(collection(db,'utenti',TARGET,'misure'),orderBy('creato','desc'),limit(60));
+    const snap=await getDocs(q);
+    if(snap.empty){box.innerHTML='<p>Nessuna misura registrata da tuo nipote.</p>';return;}
+    const rows=[]; snap.forEach(d=>rows.push(d.data()));
+    const asc=[...rows].reverse();
+    const pesoPts=asc.filter(r=>r.peso).map(r=>({d:r.data,v:r.peso}));
+    const vitaPts=asc.filter(r=>r.vita).map(r=>({d:r.data,v:r.vita}));
+    let h='<h3 style="margin:6px 0">Peso (kg)</h3>'+svgChart(pesoPts,'#a32a2a',' ');
+    h+='<h3 style="margin:14px 0 6px">Vita (cm)</h3>'+svgChart(vitaPts,'#9c7400',' ');
+    h+='<table class="mistab"><tr><th>Data</th><th>Peso</th><th>Vita</th><th>Altezza</th><th>Var. peso</th></tr>';
+    rows.forEach((r,i)=>{
+      const prev=rows[i+1]; let tr='—';
+      if(prev&&r.peso&&prev.peso){const d=r.peso-prev.peso;tr=`<span class="${d<0?'dn':(d>0?'up':'')}">${d>0?'+':''}${d.toFixed(1)}</span>`;}
+      h+=`<tr><td>${r.data}${r.note?'<br><small style="color:#888">'+r.note+'</small>':''}</td>
+        <td>${r.peso?r.peso+' kg':'—'}</td><td>${r.vita?r.vita+' cm':'—'}</td>
+        <td>${r.altezza?r.altezza+' cm':'—'}</td><td>${tr}</td></tr>`;
+    });
+    box.innerHTML=h+'</table>';
+  }catch(e){box.innerHTML='<p>Errore: '+e.message+'</p>';}
+}
+async function loadLog(){
+  const box=document.getElementById('loglist');
+  try{
+    const q=query(collection(db,'utenti',TARGET,'allenamenti'),orderBy('creato','desc'),limit(60));
+    const snap=await getDocs(q);
+    if(snap.empty){box.innerHTML='<p>Nessun allenamento salvato finora.</p>';return;}
+    // grafico carichi per esercizio
+    window._sessions=[]; snap.forEach(dc=>window._sessions.push(dc.data()));
+    const nomi=[...new Set(window._sessions.flatMap(s=>(s.esercizi||[]).filter(e=>e.kg).map(e=>e.n)))];
+    let h='';
+    if(nomi.length){
+      h+='<label style="display:block;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:#6a6d70;margin:4px 0 3px">Andamento carico</label>';
+      h+='<select id="exsel" onchange="chartEx()" style="margin-bottom:8px">'+nomi.map(n=>`<option>${n}</option>`).join('')+'</select>';
+      h+='<div id="exchart"></div>';
+    }
+    window._sessions.forEach(s=>{
+      const pct=s.tot?Math.round(100*s.fatte/s.tot):0;
+      const badge=pct>=90?'ok':'mid';
+      h+=`<div class="sess"><div class="h"><span>${s.data} — ${s.giorno}${s.gruppo?(' · '+s.gruppo):''}</span>
+        <span class="badge ${badge}">${s.fatte}/${s.tot} serie</span></div>
+        <div class="sub">${s.utente||''}</div>
+        <table>${(s.esercizi||[]).map(e=>`<tr><td>${e.n}</td><td>${e.fatte}/${e.tot}</td><td>${e.kg?e.kg+' kg':'—'}</td></tr>`).join('')}</table>
+      </div>`;
+    });
+    box.innerHTML=h;
+    if(document.getElementById('exsel')) chartEx();
+  }catch(e){box.innerHTML='<p>Errore nel caricamento: '+e.message+'</p>';}
+}
+window.chartEx=function(){
+  const n=document.getElementById('exsel').value;
+  const pts=[...window._sessions].reverse()
+    .map(s=>{const e=(s.esercizi||[]).find(x=>x.n===n&&x.kg);return e?{d:s.data,v:parseFloat(e.kg)}:null;})
+    .filter(Boolean);
+  document.getElementById('exchart').innerHTML=svgChart(pts,'#a32a2a',' kg');
+}
+</script></body></html>

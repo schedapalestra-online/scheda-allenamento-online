@@ -1,0 +1,125 @@
+APP CON BACKEND PRIVATO (FIREBASE) - CONFIGURAZIONE
+Tempo stimato: 30-40 minuti, una volta sola. Tutto gratuito per 2 utenti.
+
+FILE DELLA CARTELLA
+- index.html   -> app di tuo nipote (login richiesto)
+- admin.html   -> la TUA dashboard: modifichi la scheda e vedi i suoi allenamenti
+- config.js    -> da compilare con i dati del tuo progetto Firebase (passo 5)
+- firestore.rules -> regole di sicurezza da incollare (passo 4)
+- immagini.js, sw.js, manifest.json, icone -> non toccare
+
+PASSO 1 - CREA IL PROGETTO
+1. Vai su console.firebase.google.com e accedi con un account Google.
+2. "Crea un progetto" -> nome a piacere (es. scheda-famiglia) -> disattiva
+   Google Analytics -> Crea.
+
+PASSO 2 - ATTIVA IL LOGIN
+1. Menu a sinistra: Build -> Authentication -> Inizia.
+2. Metodo "Email/password" -> Abilita -> Salva.
+3. Scheda "Users" -> Add user: crea DUE utenti:
+   - la tua email + una password (questo sara' l'account "zio")
+   - un'email per tuo nipote + password (puo' essere anche inventata,
+     es. nipote@scheda.local NON funziona: deve essere formato email valido,
+     usa una sua email vera o creane una Gmail apposta).
+
+PASSO 3 - ATTIVA IL DATABASE
+1. Build -> Firestore Database -> Crea database.
+2. Localita': eur3 (Europa). Modalita': "produzione". Crea.
+
+PASSO 4 - REGOLE DI SICUREZZA
+1. Nella pagina Firestore, scheda "Regole".
+2. Cancella tutto e incolla il contenuto del file firestore.rules,
+   sostituendo EMAIL_DELLO_ZIO con la TUA email del passo 2 (tra apici,
+   esattamente come scritta): compare UNA volta, nella funzione isZio() in
+   alto. -> Pubblica.
+   Da questo momento: solo tu puoi modificare la scheda e leggere gli
+   allenamenti; tuo nipote puo' solo leggerla e salvare le proprie sedute.
+
+PASSO 5 - CONFIGURAZIONE DELL'APP
+1. Ingranaggio in alto a sinistra -> Impostazioni progetto.
+2. Sezione "Le tue app" -> icona </> (Web) -> registra l'app (nome a piacere,
+   NON spuntare hosting) -> ti mostra un blocco "firebaseConfig".
+3. Apri il file config.js e sostituisci i segnaposto con quei valori.
+
+PASSO 6 - METTI ONLINE I FILE
+Come per la versione precedente: repository GitHub (va bene anche con nome
+casuale) -> carica tutti i file -> Settings -> Pages -> main -> Save.
+NOTA PRIVACY: stavolta la pagina pubblica e' solo un guscio con il login:
+scheda e allenamenti stanno nel database privato, nessuno senza password
+puo' vederli.
+Infine: Authentication -> Settings -> Authorized domains -> aggiungi
+TUONOME.github.io (serve per far funzionare il login dal tuo sito).
+
+PASSO 7 - PRIMO AVVIO
+1. Apri https://TUONOME.github.io/NOME-REPO/admin.html -> entra con la TUA
+   email -> trovi gia' precaricata la scheda dei 4 giorni -> "Pubblica la scheda".
+2. Manda a tuo nipote il link .../index.html con la sua email e password:
+   lo apre, accede una volta sola, e installa l'app (menu Chrome -> Installa app).
+
+USO QUOTIDIANO
+- Tu: admin.html -> "Modifica scheda" per cambiarla (arriva a lui alla
+  prossima apertura), "Allenamenti fatti" per vedere ogni sua seduta con
+  serie completate e kg usati, dalla piu' recente.
+- Lui: si allena, spunta le serie, segna i kg, "Fine allenamento - salva".
+  Se e' offline il salvataggio parte da solo appena torna la connessione.
+
+PLAY STORE / APK: identico a prima -> pwabuilder.com con l'indirizzo
+dell'app del passo 6.
+
+NOVITA' - DIETA E MISURE
+- Nell'app di tuo nipote ci sono due tab in piu':
+  🍽 Alimentazione: principi generali (metodo del piatto, porzioni, errori
+     comuni). NON e' una dieta: e' educazione alimentare di base.
+  📏 Misure: registra peso, vita, altezza nel tempo; vede lo storico e la
+     variazione di peso tra una misura e l'altra.
+- Nella tua dashboard c'e' il tab "Misure": vedi tutte le sue misurazioni.
+- Queste misure servono a lui e al NUTRIZIONISTA SPORTIVO: portale al primo
+  appuntamento. L'app non da' consigli alimentari personalizzati: quelli
+  spettano al professionista.
+
+ALTRE FUNZIONI (aggiornamento)
+- ULTIMO PESO: su ogni esercizio l'app mostra "Ultima volta: serie e kg" e
+  precompila il campo kg con l'ultimo usato. Il diario dei carichi e' automatico.
+- NOTA DELLO ZIO: nella dashboard, in cima a "Scheda", scrivi un messaggio e
+  "Invia nota": compare in evidenza nell'app di tuo nipote. Campo vuoto = rimossa.
+- OGGI TOCCA: se il giorno corrente e' in scheda, l'app si apre sul giorno
+  giusto con il banner "Oggi tocca: ...".
+- PROMEMORIA: il bottone "Aggiungi promemoria al calendario" scarica un file
+  che crea eventi settimanali ricorrenti (ore 17, modificabili) nel calendario
+  del telefono, con avviso 30 minuti prima. (Le notifiche push vere richiedono
+  il piano a pagamento di Firebase: il calendario ottiene lo stesso risultato gratis.)
+- GRAFICI (dashboard): in "Misure" l'andamento di peso e vita; in "Allenamenti"
+  scegli un esercizio e vedi la progressione del carico nel tempo.
+- IMPORTANTE: firestore.rules e' cambiato di nuovo (collezione "stato"):
+  se hai gia' fatto il Passo 4, incolla la versione aggiornata e ripubblica.
+
+RICHIESTA VIDEO ESECUZIONE
+- Nell'editor, ogni esercizio ha la casella "Richiedi un video della sua
+  esecuzione". Spuntala e pubblica la scheda: nella sua app quell'esercizio
+  mostra un avviso viola con la richiesta (video di lato, carico leggero).
+- Lui filma e te lo manda su WhatsApp; quando l'esecuzione ti convince,
+  togli la spunta e ripubblica.
+- Consiglio: massimo 1-2 richieste attive per volta, e una sola correzione
+  per risposta. Ogni 4-6 settimane fai comunque validare la tecnica dal vivo
+  da un istruttore.
+
+
+PIU' PERSONE (tu + tuo nipote + eventuali altri)
+- Ogni persona ha un proprio account (Passo 2) e, dentro l'app, la PROPRIA
+  scheda, i propri allenamenti e le proprie misure: i dati non si mescolano.
+- Al primo accesso di ciascuno, l'app lo registra da solo nell'elenco.
+- Nella dashboard, in alto, compare un menu a tendina "persona": scegli chi
+  gestire (te stesso, tuo nipote, ...). Tutto quello che vedi/modifichi
+  (scheda, nota, allenamenti, misure) si riferisce alla persona selezionata.
+- Per aggiungere te stesso: crea un utente con la TUA email in Authentication,
+  apri index.html e fai login una volta (cosi' vieni registrato), poi dalla
+  dashboard selezionati dal menu e crea la tua scheda.
+
+IPHONE
+- Stessa app. Si installa da SAFARI (non Chrome): apri il link ->
+  tasto Condividi (quadrato con freccia) -> "Aggiungi alla schermata Home".
+- Diventa un'icona a tutto schermo come un'app normale; timer, offline e
+  promemoria-calendario funzionano.
+
+REGOLE AGGIORNATE: firestore.rules e' cambiato per il modello multi-utente.
+Se avevi gia' pubblicato le regole, incolla la nuova versione e ripubblica.
