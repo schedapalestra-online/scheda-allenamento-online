@@ -1,0 +1,967 @@
+<!DOCTYPE html><html lang="it"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>La mia scheda</title>
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#24272b">
+<link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{--ink:#24272b;--bg:#e9eae6;--card:#fff;--red:#a32a2a;--chalk:#e9c46a;--line:#d4d5d0}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,'Segoe UI',Roboto,sans-serif;padding-bottom:110px}
+header{position:sticky;top:0;z-index:10;background:var(--ink);color:#fff;padding:12px 14px 10px}
+header h1{margin:0 0 2px;font-size:15px;letter-spacing:.18em;text-transform:uppercase;font-weight:900}
+header .upd{font-size:11px;color:#9a9da1;margin-bottom:8px}
+.tabs{display:flex;gap:8px}
+.tab{flex:1;border:2px solid #4a4d52;background:transparent;color:#c8cacd;border-radius:999px;padding:8px 0;font-weight:800;font-size:13px;letter-spacing:.06em}
+.tab.on{background:var(--red);border-color:var(--red);color:#fff}
+.daytitle{padding:14px 16px 2px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#6a6d70;font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:10px 12px;overflow:hidden}
+.card.done{opacity:.55}
+.imgwrap{background:#f6f5f1;border-bottom:1px solid var(--line);text-align:center}
+.imgwrap img{max-width:100%;max-height:260px;display:block;margin:0 auto}
+.body{padding:12px 14px}
+h2{margin:0;font-size:17px;font-weight:900}
+.meta{display:flex;gap:6px;margin:8px 0 10px;flex-wrap:wrap}
+.pill{background:#f0efe9;border:1px solid var(--line);border-radius:8px;padding:4px 9px;font-size:12.5px;font-weight:700}
+.pill.rest{background:#fbeee0;border-color:#e8d3b8}
+.cues{margin:0;padding-left:18px;font-size:14px;line-height:1.5;color:#3a3d41}
+.cues li{margin:2px 0}
+.exec{margin-top:12px;border-top:1px solid var(--line);padding-top:10px;font-size:14px;line-height:1.55}
+.exectitle{font-weight:800;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:2px}
+.exec ol{margin:4px 0;padding-left:20px}
+.exec li{margin:4px 0}
+.exec .err{background:#fdeaea;border-left:3px solid var(--red);padding:6px 10px;border-radius:0 6px 6px 0;margin-top:8px}
+.exec .yt{margin-top:10px;font-size:13px;word-break:break-all}
+.exec .yt a{color:var(--red);font-weight:700}
+.msg{margin:10px 14px;padding:8px 12px;background:#fff7e0;border-left:3px solid #d9a400;font-size:13px;border-radius:0 8px 8px 0}
+.kgrow{display:flex;gap:8px;align-items:center;margin-top:10px}
+.kgrow label{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#8a8d90;font-weight:700}
+.kgrow input{width:90px;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:15px;font-weight:800;text-align:center}
+.vidfb{font-size:12.5px;margin-top:6px}
+.vidfb a{color:var(--red);font-weight:700}
+.report{display:block;margin:14px 12px 4px;width:calc(100% - 24px);border:0;border-radius:12px;padding:14px 0;
+ font-weight:900;font-size:15px;background:#1f7a3d;color:#fff}
+.sets{display:flex;gap:10px;margin:12px 0 2px;align-items:center}
+.setlbl{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#8a8d90;font-weight:700}
+.plate{width:40px;height:40px;border-radius:50%;border:3px solid var(--ink);background:#fff;font-weight:900;font-size:14px;color:var(--ink)}
+.plate.on{background:var(--ink);color:var(--chalk);box-shadow:inset 0 0 0 4px var(--chalk)}
+.vidbox{margin-top:12px;border-radius:12px;overflow:hidden;background:#000;position:relative;aspect-ratio:16/9;display:none}
+.vidbox.show{display:block}
+.vidbox iframe,.vidbox video{width:100%;height:100%;border:0;display:block}
+.row{display:flex;gap:8px;margin-top:12px}
+.btn{flex:1;border:0;border-radius:10px;padding:11px 0;font-weight:800;font-size:14px}
+.btn.timer{background:var(--red);color:#fff}
+.btn.video{background:#f0efe9;border:1px solid var(--line);color:var(--ink);text-align:center;text-decoration:none;line-height:1;padding:13px 0}
+#bar{position:fixed;left:0;right:0;bottom:-120px;transition:bottom .25s;background:var(--ink);color:#fff;display:flex;align-items:center;gap:12px;padding:12px 16px;z-index:20}
+#bar.show{bottom:0}
+#tval{font-family:ui-monospace,Menlo,monospace;font-size:38px;font-weight:800;min-width:118px;font-variant-numeric:tabular-nums}
+#tname{flex:1;font-size:13px;color:#c8cacd;line-height:1.3}
+#bar button{border:0;border-radius:10px;padding:10px 12px;font-weight:800}
+#plus{background:#4a4d52;color:#fff}
+#stop{background:var(--red);color:#fff}
+#ring{width:52px;height:52px;transform:rotate(-90deg)}
+#ring circle{fill:none;stroke-width:6}
+#ring .bgc{stroke:#4a4d52}
+#ring .fgc{stroke:var(--chalk);stroke-linecap:round;transition:stroke-dashoffset 1s linear}
+
+.overlay{position:fixed;inset:0;background:var(--bg);z-index:50;display:flex;align-items:center;justify-content:center;padding:20px}
+.login{width:100%;max-width:340px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px}
+.login h2{margin:0 0 4px;font-size:18px}
+.login p{margin:0 0 14px;font-size:13px;color:#6a6d70}
+.login label{display:block;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:#6a6d70;margin:10px 0 3px}
+.login input{width:100%;border:1px solid var(--line);border-radius:9px;padding:11px;font-size:15px}
+.login button{width:100%;margin-top:16px;border:0;border-radius:10px;padding:13px 0;font-weight:900;font-size:15px;background:var(--red);color:#fff}
+.login .err2{color:var(--red);font-size:13px;margin-top:10px;font-weight:700}
+.savebtn{display:block;margin:14px 12px 4px;width:calc(100% - 24px);border:0;border-radius:12px;padding:14px 0;font-weight:900;font-size:15px;background:#1f7a3d;color:#fff}
+.okmsg{margin:8px 12px;padding:8px 12px;background:#e4f3e8;border-left:3px solid #1f7a3d;font-size:13px;border-radius:0 8px 8px 0}
+.logout{background:none;border:0;color:#9a9da1;font-size:12px;text-decoration:underline;padding:0;float:right}
+
+.nutri{padding:4px 14px 20px;max-width:760px;margin:0 auto}
+.nutri h3{color:var(--red);font-size:16px;margin:18px 0 6px}
+.nutri p,.nutri li{font-size:14.5px;line-height:1.6;color:#e6e4de}
+.nutri ul{padding-left:18px;margin:6px 0}
+.nutri li{margin:5px 0}
+.nb{border-radius:0 10px 10px 0;padding:10px 13px;font-size:14px;line-height:1.55;margin:12px 0}
+.warn2{background:#3a2e12;border-left:3px solid var(--chalk);color:#f0e6cf}
+.note2{font-size:13.5px;color:#b7bac0;font-style:italic}
+.plate-vis{display:flex;height:56px;border-radius:12px;overflow:hidden;margin:10px 0;font-weight:900;font-size:12px;letter-spacing:.04em}
+.plate-vis .pv{display:flex;align-items:center;justify-content:center;color:#12140f}
+.plate-vis .verd{flex:2;background:#7cae5a}.plate-vis .carb{flex:1;background:#e9c46a}.plate-vis .prot{flex:1;background:#d98b5f}
+.ptab{width:100%;border-collapse:collapse;margin:8px 0;font-size:13.5px}
+.ptab th,.ptab td{border:1px solid var(--line);padding:7px 9px;text-align:left;color:#e6e4de}
+.ptab th{background:#2b2f35;font-size:12px;letter-spacing:.04em;text-transform:uppercase}
+
+.mis{padding:6px 14px 20px;max-width:760px;margin:0 auto}
+.mis h3{color:var(--red);font-size:16px;margin:16px 0 8px}
+.mis .nb{border-radius:0 10px 10px 0;padding:10px 13px;font-size:13.5px;line-height:1.55;margin:10px 0;background:#3a2e12;border-left:3px solid var(--chalk);color:#f0e6cf}
+.misform{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:8px 0}
+.misform .full{grid-column:1/-1}
+.misform label{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:var(--dim);margin-bottom:3px}
+.misform input{width:100%;border:1px solid var(--line);border-radius:9px;padding:10px;font-size:15px;font-weight:700;background:var(--panel);color:var(--txt)}
+.misbtn{width:100%;border:0;border-radius:11px;padding:13px 0;font-weight:900;font-size:15px;background:#1f7a3d;color:#fff;margin-top:4px}
+.mistab{width:100%;border-collapse:collapse;margin-top:12px;font-size:13.5px}
+.mistab th,.mistab td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:right;color:var(--txt)}
+.mistab th{font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--dim);text-align:right}
+.mistab td:first-child,.mistab th:first-child{text-align:left}
+.trend{font-size:12px;font-weight:800}
+.trend.dn{color:#5bbd7a}.trend.up{color:#d98b5f}
+
+.today{margin:10px 12px 0;padding:10px 13px;border-radius:12px;background:#26313d;border:1px solid #35455a;font-size:14px;font-weight:700}
+.coach{margin:10px 12px 0;padding:10px 13px;border-radius:12px;background:#3a2e12;border-left:4px solid var(--chalk);font-size:14px;line-height:1.5}
+.coach .cd{font-size:11px;color:#b7a76f;letter-spacing:.08em;text-transform:uppercase;font-weight:800;margin-bottom:2px}
+.lastw{font-size:12.5px;color:#9fc3a8;font-weight:700;margin-top:6px}
+.icsbtn{background:none;border:1px solid var(--line);color:var(--dim);border-radius:8px;font-size:12px;padding:6px 10px;margin:8px 12px 0;font-weight:700}
+
+.reqvid{margin-top:10px;padding:9px 12px;border-radius:10px;background:#2b2440;border-left:4px solid #8d7ae6;font-size:13.5px;line-height:1.5}
+</style>
+</head><body>
+<div class="overlay" id="loginov"><div class="login">
+ <h2>La mia scheda</h2><p>Accedi con l'account che ti è stato creato. Resterai collegato.</p>
+ <label>Email</label><input id="lemail" type="email" autocomplete="username">
+ <label>Password</label><input id="lpass" type="password" autocomplete="current-password">
+ <button id="lbtn">Entra</button><div class="err2" id="lerr"></div>
+</div></div>
+<header><h1 id="htitle">La mia scheda</h1><div class="upd" id="hupd"></div><div class="tabs" id="tabs"></div></header>
+<div id="notice"></div>
+<div id="coachnote"></div>
+<div id="todaybox"></div>
+<div id="view"></div>
+<div id="bar">
+ <svg id="ring" viewBox="0 0 52 52"><circle class="bgc" cx="26" cy="26" r="22"/><circle class="fgc" cx="26" cy="26" r="22" stroke-dasharray="138.2" stroke-dashoffset="0"/></svg>
+ <div id="tval">0:00</div><div id="tname"></div>
+ <button id="plus">+30s</button><button id="stop">Stop</button>
+</div>
+<script src="immagini.js"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { initializeFirestore, persistentLocalCache, doc, getDoc, setDoc, addDoc, collection, serverTimestamp, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { firebaseConfig } from "./config.js";
+
+const fapp = initializeApp(firebaseConfig);
+const auth = getAuth(fapp);
+const db = initializeFirestore(fapp, {localCache: persistentLocalCache()});
+
+const DEFAULT_SCHEDA={
+ "titolo": "La mia scheda · 4 giorni",
+ "aggiornata": "2026-07-08",
+ "giorni": [
+  {
+   "d": "Lunedì",
+   "t": "Petto e Schiena",
+   "ex": [
+    {
+     "n": "Lat machine con triangolo",
+     "s": 3,
+     "r": "8-12",
+     "rl": "2-3 min",
+     "rs": 150,
+     "img": "lat",
+     "c": [
+      "Petto in fuori, spalle basse",
+      "Tira allo sterno chiudendo le scapole",
+      "Risali lento a braccia distese"
+     ],
+     "st": [
+      "Regola il fermo per le ginocchia in modo da restare bloccato al sedile.",
+      "Aggancia il triangolo al cavo alto, presa neutra (palmi che si guardano).",
+      "Siediti con petto in fuori, spalle basse, curva lombare naturale.",
+      "Tira il triangolo verso lo sterno piegando i gomiti e inclinando leggermente indietro il busto.",
+      "Fermati un istante a scapole chiuse, poi risali lentamente fino a braccia distese.",
+      "Espira tirando, inspira nel ritorno."
+     ],
+     "e": "Dondolare il busto per slancio, tirare solo di braccia, ritorno incontrollato. Mai dietro la nuca.",
+     "v": "https://www.youtube.com/watch?v=oqfWu0hgKmA"
+    },
+    {
+     "n": "Chest press inclinata",
+     "s": 3,
+     "r": "8-12",
+     "rl": "2-3 min",
+     "rs": 150,
+     "img": "chest",
+     "c": [
+      "Maniglie all'altezza del petto",
+      "Schiena sullo schienale",
+      "Non bloccare i gomiti"
+     ],
+     "st": [
+      "Regola il sedile: impugnature all'altezza del petto, non delle spalle.",
+      "Schiena e testa aderenti allo schienale, piedi a terra, scapole leggermente addotte.",
+      "Spingi in avanti/alto fino quasi a distendere le braccia (gomiti mai bloccati).",
+      "Torna lentamente finché le mani sono in linea con il petto.",
+      "Espira in spinta, inspira in ritorno."
+     ],
+     "e": "Staccare la schiena dallo schienale, ROM ridotto, gomiti completamente aperti di lato (tienili a ~75°).",
+     "v": "https://www.youtube.com/watch?v=sE0GTlKJeGE"
+    },
+    {
+     "n": "Pulley con presa prona",
+     "s": 3,
+     "r": "8-12",
+     "rl": "2 min",
+     "rs": 120,
+     "img": "pulley",
+     "c": [
+      "Busto verticale, ginocchia semiflesse",
+      "Gomiti dietro, scapole chiuse",
+      "Ritorno lento"
+     ],
+     "st": [
+      "Siediti al pulley basso, piedi sugli appoggi, ginocchia semiflesse (mai tese).",
+      "Presa prona sulla sbarra, larghezza spalle o poco più.",
+      "Busto perpendicolare al pavimento, petto in fuori, lombare naturale.",
+      "Tira verso la parte alta dell'addome portando i gomiti dietro il busto e chiudendo le scapole.",
+      "Tieni 1-2 secondi, poi torna lentamente a braccia distese senza farti trascinare avanti.",
+      "Espira tirando, inspira nel ritorno."
+     ],
+     "e": "Oscillare il busto, spalle verso le orecchie, ritorno veloce.",
+     "v": "https://www.youtube.com/watch?v=BocFDOhppQ8"
+    },
+    {
+     "n": "Chest press",
+     "s": 2,
+     "r": "8-12",
+     "rl": "2 min",
+     "rs": 120,
+     "img": "chest",
+     "c": [
+      "Maniglie ai pettorali",
+      "Gomiti a ~75° dal busto",
+      "Ritorno in 2-3 secondi"
+     ],
+     "st": [
+      "Regola il sedile con le maniglie all'altezza dei pettorali.",
+      "Schiena aderente, angolo omero-busto circa 75°.",
+      "Spingi quasi a braccia distese, torna con le mani in linea al petto.",
+      "Espira in spinta, inspira in ritorno."
+     ],
+     "e": "Gli stessi della versione inclinata.",
+     "v": "https://www.youtube.com/watch?v=lAkcFUulVn4"
+    },
+    {
+     "n": "Alzate laterali con manubri",
+     "s": 2,
+     "r": "12-15",
+     "rl": "1,5 min",
+     "rs": 90,
+     "img": "alzate",
+     "c": [
+      "Gomito flesso e fisso",
+      "Fino all'altezza spalle, non oltre",
+      "Carico leggero"
+     ],
+     "st": [
+      "In piedi, piedi larghezza spalle, ginocchia morbide, manubri ai fianchi.",
+      "Gomiti leggermente flessi, angolo fisso, spalle basse.",
+      "Alza le braccia lateralmente e leggermente avanti (30-40°) fino all'altezza delle spalle, con leggera extrarotazione dell'omero.",
+      "Scendi lentamente fermandoti poco prima delle cosce per mantenere tensione."
+     ],
+     "e": "Slancio con la schiena, alzare le spalle, polsi piegati, salire oltre i 90°.",
+     "v": "https://www.youtube.com/watch?v=W3a6S3gRmaU"
+    }
+   ]
+  },
+  {
+   "d": "Martedì",
+   "t": "Spalle e Braccia",
+   "ex": [
+    {
+     "n": "Shoulder press",
+     "s": 3,
+     "r": "8-12",
+     "rl": "2-3 min",
+     "rs": 150,
+     "img": "shoulder",
+     "c": [
+      "Maniglie ad altezza spalle/mento",
+      "Gomiti leggermente avanti",
+      "Discesa completa"
+     ],
+     "st": [
+      "Regola il sedile: maniglie all'altezza spalle/mento.",
+      "Schiena aderente allo schienale, piedi a terra, core attivo.",
+      "Gomiti leggermente avanti rispetto al busto, non aperti di lato.",
+      "Spingi verso l'alto fino quasi a distendere le braccia.",
+      "Scendi lentamente e in modo completo, spalle basse.",
+      "Espira spingendo, inspira scendendo."
+     ],
+     "e": "Inarcare la lombare staccandola dallo schienale, ROM parziale, gomiti dietro la linea del busto.",
+     "v": "https://www.youtube.com/watch?v=RFxZrhumUXU"
+    },
+    {
+     "n": "Peck back",
+     "s": 3,
+     "r": "12-15",
+     "rl": "1,5-2 min",
+     "rs": 105,
+     "img": "peck",
+     "c": [
+      "Petto sullo schienale",
+      "Gomito fisso",
+      "Apri chiudendo le scapole"
+     ],
+     "st": [
+      "Regola le maniglie in posizione posteriore (modalità reverse), sedile con maniglie all'altezza delle spalle.",
+      "Siediti al contrario, petto contro lo schienale.",
+      "Braccia semidistese davanti, gomiti leggermente flessi.",
+      "Apri le braccia all'indietro chiudendo le scapole, senza variare l'angolo del gomito.",
+      "Fermati un istante, torna lentamente."
+     ],
+     "e": "Piegare i gomiti (diventa un rematore), staccare il petto dallo schienale, slancio.",
+     "v": "https://www.youtube.com/watch?v=3RLqAh8-9Pg"
+    },
+    {
+     "n": "Face pulls",
+     "s": 2,
+     "r": "12-15",
+     "rl": "1,5 min",
+     "rs": 90,
+     "img": "facepull",
+     "c": [
+      "Corda ad altezza viso",
+      "Gomiti alti, nocche in su",
+      "Carico leggero"
+     ],
+     "st": [
+      "Aggancia la corda al cavo alto (altezza viso o poco sopra).",
+      "Presa neutra sulle estremità, un passo indietro, addome attivo, scapole basse.",
+      "Tira la corda verso il viso separando le mani ai lati della testa; gomiti alti, spalle che extraruotano (nocche verso il soffitto).",
+      "1 secondo di fermo, ritorno controllato.",
+      "Carico leggero: conta il movimento, non il peso."
+     ],
+     "e": "Troppo carico (diventa un rematore), gomiti bassi, slancio col busto. Nota: nelle immagini c'è barra/maniglia, tu usa la corda.",
+     "v": "https://www.youtube.com/watch?v=-H3AEd2S2RQ"
+    },
+    {
+     "n": "French press con EZ o manubri",
+     "s": 2,
+     "r": "10-12",
+     "rl": "1,5-2 min",
+     "rs": 105,
+     "img": "frenchpress",
+     "c": [
+      "Piega SOLO i gomiti",
+      "Gomiti stretti e fermi",
+      "Discesa 2-3 secondi"
+     ],
+     "st": [
+      "Sdraiato su panca piana con due manubri (presa neutra) o bilanciere EZ, braccia verticali sopra le spalle, scapole addotte.",
+      "Piega solo i gomiti, facendo scendere i manubri accanto alle orecchie in 2-3 secondi.",
+      "Gomiti fermi, stretti, senza aprirsi.",
+      "Estendi i gomiti risalendo alla partenza, senza muovere le spalle.",
+      "Inspira scendendo, espira risalendo."
+     ],
+     "e": "Gomiti che si aprono o si muovono, carico eccessivo (gomito delicato), muovere le spalle.",
+     "v": "https://www.youtube.com/watch?v=Rd3a4dC_bwI"
+    },
+    {
+     "n": "Curl manubri alternati",
+     "s": 3,
+     "r": "8-12",
+     "rl": "1,5-2 min",
+     "rs": 105,
+     "img": "curl",
+     "c": [
+      "Gomiti fermi ai fianchi",
+      "Ruota il palmo salendo",
+      "Scendi lento"
+     ],
+     "st": [
+      "In piedi, ginocchia morbide, manubri lungo i fianchi con presa neutra.",
+      "Gomiti fermi, aderenti al busto.",
+      "Fletti un gomito ruotando il palmo verso l'alto durante la salita (supinazione).",
+      "Fermati al picco di contrazione, scendi lentamente.",
+      "Alterna le braccia."
+     ],
+     "e": "Oscillare la schiena (carico eccessivo), gomiti che avanzano, discesa a peso morto.",
+     "v": "https://www.youtube.com/watch?v=RhVdFHcHKDE"
+    },
+    {
+     "n": "Plank",
+     "s": 3,
+     "r": "30-45\"",
+     "rl": "1 min",
+     "rs": 60,
+     "img": "plank",
+     "c": [
+      "Gomiti sotto le spalle",
+      "Linea retta testa-talloni",
+      "Respira normalmente"
+     ],
+     "st": [
+      "A terra su tappetino, appoggia gomiti e avambracci (gomiti sotto le spalle) e punte dei piedi.",
+      "Solleva il corpo formando una linea retta testa-spalle-bacino-talloni.",
+      "Contrai addome e glutei; non far scendere il bacino né alzarlo a tenda.",
+      "Sguardo a terra, collo neutro, respira normalmente.",
+      "Tieni 30-45 secondi; a 60\" facili passa a varianti più difficili."
+     ],
+     "e": "Bacino che cade (fa male alla lombare), sedere in alto, trattenere il fiato.",
+     "v": "https://www.youtube.com/watch?v=aJOB8LwFPY8"
+    }
+   ]
+  },
+  {
+   "d": "Giovedì",
+   "t": "Gambe",
+   "ex": [
+    {
+     "n": "Hack squat",
+     "s": 3,
+     "r": "8-10",
+     "rl": "3 min",
+     "rs": 180,
+     "img": "hacksquat",
+     "c": [
+      "Schiena sullo schienale",
+      "Scendi a cosce parallele",
+      "Non bloccare le ginocchia"
+     ],
+     "st": [
+      "Spalle sotto i cuscinetti, schiena e bacino aderenti allo schienale, petto in fuori.",
+      "Piedi larghezza spalle sulla pedana, punte leggermente in fuori, posizione centrale.",
+      "Sblocca le sicure e scendi lentamente fino a cosce circa parallele alla pedana.",
+      "Risali spingendo con tutto il piede, senza bloccare le ginocchia.",
+      "Inspira in discesa, espira in salita; non spingere con le braccia."
+     ],
+     "e": "Staccare bacino o schiena dallo schienale, rimbalzo in basso, talloni che si sollevano.",
+     "v": "https://www.youtube.com/watch?v=PH9uLhNr-s4"
+    },
+    {
+     "n": "Leg press singola",
+     "s": 2,
+     "r": "8-12 /gamba",
+     "rl": "2 min",
+     "rs": 120,
+     "img": "legpress",
+     "c": [
+      "Piede al centro pedana",
+      "Bacino sempre appoggiato",
+      "Ginocchio mai bloccato"
+     ],
+     "st": [
+      "Schiena e bacino ben aderenti allo schienale.",
+      "Un piede al centro della pedana, l'altro a terra o sull'appoggio.",
+      "Scendi lentamente fin dove il bacino resta appoggiato.",
+      "Spingi estendendo quasi completamente il ginocchio (mai bloccarlo).",
+      "Inspira in discesa, espira in spinta; completa una gamba, poi cambia."
+     ],
+     "e": "Bacino che si stacca in discesa, ginocchio bloccato, discesa eccessiva.",
+     "v": "https://www.youtube.com/watch?v=LMTyPl_oo38"
+    },
+    {
+     "n": "Leg curl seduto",
+     "s": 3,
+     "r": "8-12",
+     "rl": "2 min",
+     "rs": 120,
+     "img": "legcurl",
+     "c": [
+      "Fulcro in linea col ginocchio",
+      "Talloni verso il sedile",
+      "Ritorno lento"
+     ],
+     "st": [
+      "Regola la macchina: fulcro della leva in linea con il centro del ginocchio.",
+      "Rullo dietro le caviglie, cuscino che blocca le cosce, schiena appoggiata.",
+      "Da gambe distese, fletti le ginocchia portando i talloni verso il sedile.",
+      "Controlla il ritorno lentamente.",
+      "Espira flettendo, inspira nel ritorno."
+     ],
+     "e": "Fulcro non in linea col ginocchio, ritorno veloce.",
+     "v": "https://www.youtube.com/watch?v=gopI4Fbgx4w"
+    },
+    {
+     "n": "Hyperextension a 45°",
+     "s": 3,
+     "r": "10-15",
+     "rl": "1,5-2 min",
+     "rs": 105,
+     "img": "hyper",
+     "c": [
+      "Piegati dall'anca",
+      "Schiena NEUTRA",
+      "Risali in linea, non oltre"
+     ],
+     "st": [
+      "Regola il cuscino: il bordo sotto le creste iliache (sotto la pancia), anche libere.",
+      "Caviglie sotto i rulli, piedi saldi, corpo in linea, braccia al petto.",
+      "Scendi lentamente piegandoti dall'anca, schiena neutra (non srotolare la colonna).",
+      "Fermati quando senti tirare dietro le cosce.",
+      "Risali contraendo glutei e femorali fino a tornare in linea: non oltre.",
+      "Inspira scendendo, espira risalendo. Con 15 rip. facili, tieni un disco al petto."
+     ],
+     "e": "Incurvare la schiena in discesa, salire oltre la linea inarcandosi, movimento a molla.",
+     "v": "https://www.youtube.com/watch?v=76ASztmf1HA"
+    },
+    {
+     "n": "Polpacci a ginocchio esteso",
+     "s": 3,
+     "r": "10-15",
+     "rl": "1,5 min",
+     "rs": 90,
+     "img": "calf",
+     "c": [
+      "Massimo allungamento in basso",
+      "1\" di fermo in alto",
+      "Niente rimbalzi"
+     ],
+     "st": [
+      "Alla calf machine o alla pressa: avampiedi sul bordo, talloni liberi, ginocchia distese non bloccate.",
+      "Scendi con i talloni il più in basso possibile.",
+      "Spingi sulle punte fino alla massima contrazione.",
+      "1 secondo in alto, discesa lenta; niente rimbalzi.",
+      "Espira salendo, inspira scendendo."
+     ],
+     "e": "ROM parziale (l'errore più diffuso), rimbalzi, ginocchia che si piegano.",
+     "v": "https://www.youtube.com/watch?v=9HbbuUPsdPw"
+    },
+    {
+     "n": "Leg extension (opzionale)",
+     "s": 2,
+     "r": "12-15",
+     "rl": "1,5 min",
+     "rs": 90,
+     "img": "legext",
+     "c": [
+      "Solo se le ginocchia stanno bene",
+      "1\" di fermo in alto",
+      "Discesa lenta"
+     ],
+     "st": [
+      "Solo se hai ancora energie e le ginocchia non danno fastidio.",
+      "Fulcro in linea col centro del ginocchio, rullo sopra le caviglie.",
+      "Estendi le gambe in modo controllato, 1 secondo di contrazione.",
+      "Scendi lentamente a ginocchio flesso.",
+      "Espira estendendo, inspira scendendo."
+     ],
+     "e": "Calciare il peso con slancio, sollevare il bacino, ritorno incontrollato.",
+     "v": "https://www.youtube.com/watch?v=wRSr98kKUsg"
+    }
+   ]
+  },
+  {
+   "d": "Venerdì",
+   "t": "Upper Body",
+   "ex": [
+    {
+     "n": "Lat machine prona",
+     "s": 3,
+     "r": "8-12",
+     "rl": "2-3 min",
+     "rs": 150,
+     "img": "lat",
+     "c": [
+      "Presa larga prona",
+      "Guida coi gomiti",
+      "Mai dietro la nuca"
+     ],
+     "st": [
+      "Impugna la sbarra con presa prona, mani più larghe delle spalle.",
+      "Siediti bloccato sotto i fermi, petto in fuori, lombare naturale.",
+      "Tira la sbarra verso lo sterno guidando con i gomiti, leggero arretramento del busto.",
+      "Chiudi le scapole in basso, risali lentamente a braccia distese.",
+      "Espira tirando, inspira risalendo."
+     ],
+     "e": "Dondolarsi, tirare verso la pancia, portarla dietro la nuca (vietato).",
+     "v": "https://www.youtube.com/watch?v=P8QKoy5sjv8"
+    },
+    {
+     "n": "Chest press inclinata",
+     "s": 2,
+     "r": "8-12",
+     "rl": "2 min",
+     "rs": 120,
+     "img": "chest",
+     "c": [
+      "Come il lunedì",
+      "Una serie in meno",
+      "ROM completo"
+     ],
+     "st": [
+      "Identica al lunedì, con una serie in meno: seconda frequenza settimanale per il petto.",
+      "Schiena sullo schienale, spinta quasi a braccia distese, ritorno lento."
+     ],
+     "e": "Gli stessi del lunedì.",
+     "v": "https://www.youtube.com/watch?v=sE0GTlKJeGE"
+    },
+    {
+     "n": "Alzate laterali al cavo",
+     "s": 2,
+     "r": "12-15",
+     "rl": "1,5 min",
+     "rs": 90,
+     "img": "alzate",
+     "c": [
+      "Cavo basso, mano opposta",
+      "Gomito fisso",
+      "Non appoggiare il pacco"
+     ],
+     "st": [
+      "Cavo in basso; di fianco alla colonna, impugna la maniglia con la mano opposta (cavo davanti al corpo).",
+      "Ginocchia morbide, busto fermo, mano libera in appoggio.",
+      "Alza il braccio lateralmente fino all'altezza della spalla, gomito leggermente flesso e fisso.",
+      "Scendi lentamente senza far toccare il pacco pesi.",
+      "Completa le ripetizioni, cambia lato."
+     ],
+     "e": "Slancio, tirare di trapezio, ROM oltre i 90°.",
+     "v": "https://www.youtube.com/watch?v=IiGnKYInkSM"
+    },
+    {
+     "n": "Pushdown con barra",
+     "s": 3,
+     "r": "10-12",
+     "rl": "1,5-2 min",
+     "rs": 105,
+     "img": "pushdown",
+     "c": [
+      "Gomiti fermi ai fianchi",
+      "1\" di fermo in basso",
+      "Polsi rigidi"
+     ],
+     "st": [
+      "Barra al cavo alto, alla massima altezza.",
+      "In piedi, busto leggermente inclinato avanti, addome attivo.",
+      "Presa prona, gomiti fermi e aderenti ai fianchi.",
+      "Estendi i gomiti fino a braccia distese, 1 secondo di contrazione.",
+      "Risali lentamente fino ad avambracci paralleli al suolo; i gomiti non si muovono.",
+      "Espira spingendo, inspira risalendo."
+     ],
+     "e": "Gomiti che si allargano o avanzano, spingere col peso del corpo, polsi piegati.",
+     "v": "https://www.youtube.com/watch?v=1eL7reY-6LQ"
+    },
+    {
+     "n": "Curl EZ o manubri",
+     "s": 2,
+     "r": "10-12",
+     "rl": "1,5-2 min",
+     "rs": 105,
+     "img": "curl",
+     "c": [
+      "Gomiti fermi ai fianchi",
+      "Busto immobile",
+      "Discesa 2-3 secondi"
+     ],
+     "st": [
+      "In piedi, ginocchia morbide, bilanciere EZ sulle curve (o due manubri).",
+      "Gomiti fermi lungo i fianchi.",
+      "Fletti i gomiti fino al picco di contrazione senza muovere il busto.",
+      "Scendi lentamente (2-3 secondi) fino a braccia distese.",
+      "Espira salendo, inspira scendendo."
+     ],
+     "e": "Oscillare la schiena, gomiti che avanzano, discesa a peso morto.",
+     "v": "https://www.youtube.com/watch?v=RhVdFHcHKDE"
+    },
+    {
+     "n": "Crunch a terra",
+     "s": 3,
+     "r": "12-15",
+     "rl": "1 min",
+     "rs": 60,
+     "img": "crunch",
+     "c": [
+      "Lombare sempre a terra",
+      "Solleva solo le spalle",
+      "Non tirare la testa"
+     ],
+     "st": [
+      "Sdraiato supino, ginocchia piegate, piedi a terra, mani ai lati della testa (non a tirare la nuca).",
+      "Solleva spalle e parte alta della schiena arrotolando il busto: la lombare resta a terra.",
+      "Espira salendo, contrai l'addome 1 secondo.",
+      "Scendi lentamente inspirando, senza appoggiare del tutto la testa.",
+      "Movimento corto: bastano 15-20 cm."
+     ],
+     "e": "Tirare la testa con le mani, staccare la lombare (diventa un sit-up), slancio.",
+     "v": "https://www.youtube.com/watch?v=Iep9ffXKQHw"
+    }
+   ]
+  }
+ ]
+};
+let SCHEDA=DEFAULT_SCHEDA, DATA=SCHEDA.giorni, day=0, done={}, kgs={}, USER=null, LASTW={};
+
+// ---------- LOGIN ----------
+document.getElementById('lbtn').onclick=async()=>{
+  const e=document.getElementById('lemail').value.trim(), p=document.getElementById('lpass').value;
+  document.getElementById('lerr').textContent='';
+  try{ await setPersistence(auth, browserLocalPersistence);
+       await signInWithEmailAndPassword(auth,e,p); }
+  catch(err){ document.getElementById('lerr').textContent='Accesso non riuscito: controlla email e password.'; }
+};
+onAuthStateChanged(auth, async u=>{
+  if(u){ USER=u; document.getElementById('loginov').style.display='none';
+    try{ await setDoc(doc(db,'utenti',u.uid),{email:u.email, nome:(u.displayName||u.email), ultimoAccesso:serverTimestamp()},{merge:true}); }catch(e){}
+    await loadScheda();
+  } else { document.getElementById('loginov').style.display='flex'; }
+});
+
+// ---------- SCHEDA DA FIRESTORE ----------
+async function loadScheda(){
+  try{
+    const snap=await getDoc(doc(db,'utenti',USER.uid,'dati','scheda'));
+    if(snap.exists()){ SCHEDA=snap.data(); DATA=SCHEDA.giorni; }
+    document.getElementById('notice').innerHTML='';
+  }catch(e){
+    document.getElementById('notice').innerHTML='<div class="msg">Offline: mostro l\'ultima scheda salvata.</div>';
+  }
+  try{ const ns=await getDoc(doc(db,'utenti',USER.uid,'dati','nota'));
+    if(ns.exists() && ns.data().testo){
+      document.getElementById('coachnote').innerHTML=
+        `<div class="coach"><div class="cd">Nota dello zio · ${ns.data().data||''}</div>${ns.data().testo}</div>`;
+    } else { document.getElementById('coachnote').innerHTML=''; }
+  }catch(e){}
+  try{ const ws=await getDoc(doc(db,'utenti',USER.uid,'dati','pesi'));
+    if(ws.exists()) LASTW=ws.data();
+  }catch(e){}
+  // banner "oggi tocca"
+  const wd=['domenica','lunedì','martedì','mercoledì','giovedì','venerdì','sabato'][new Date().getDay()];
+  const oggi=DATA.findIndex(d=>d.d.toLowerCase().startsWith(wd.slice(0,5)));
+  if(oggi>=0){
+    document.getElementById('todaybox').innerHTML=
+      `<div class="today">💪 Oggi tocca: <span style="color:var(--chalk)">${DATA[oggi].d} — ${DATA[oggi].t||''}</span></div>
+       <button class="icsbtn" onclick="scaricaICS()">🔔 Aggiungi promemoria al calendario del telefono</button>`;
+    day=oggi;
+  } else {
+    document.getElementById('todaybox').innerHTML='<button class="icsbtn" onclick="scaricaICS()">🔔 Aggiungi promemoria al calendario del telefono</button>';
+  }
+  buildTabs(); render();
+}
+window.scaricaICS=function(){
+  const map={'lun':'MO','mar':'TU','mer':'WE','gio':'TH','ven':'FR','sab':'SA','dom':'SU'};
+  let ics='BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//scheda//IT\r\n';
+  DATA.forEach((d,i)=>{
+    const by=map[d.d.slice(0,3).toLowerCase()]; if(!by) return;
+    ics+='BEGIN:VEVENT\r\nUID:scheda-'+i+'@app\r\nDTSTART;TZID=Europe/Rome:20260713T170000\r\nDURATION:PT1H30M\r\n'
+      +'RRULE:FREQ=WEEKLY;BYDAY='+by+'\r\nSUMMARY:Allenamento: '+(d.t||d.d)+'\r\n'
+      +'BEGIN:VALARM\r\nTRIGGER:-PT30M\r\nACTION:DISPLAY\r\nDESCRIPTION:Allenamento tra 30 minuti\r\nEND:VALARM\r\nEND:VEVENT\r\n';
+  });
+  ics+='END:VCALENDAR\r\n';
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([ics],{type:'text/calendar'}));
+  a.download='promemoria_allenamenti.ics'; a.click();
+}
+function buildTabs(){
+  document.getElementById('htitle').textContent=SCHEDA.titolo||'La mia scheda';
+  document.getElementById('hupd').textContent=SCHEDA.aggiornata?('Aggiornata il '+SCHEDA.aggiornata):'';
+  const tabs=document.getElementById('tabs'); tabs.innerHTML='';
+  DATA.forEach((d,i)=>{const b=document.createElement('button');
+    b.className='tab'+(i===day&&day>=0?' on':''); b.textContent=d.d.slice(0,3).toUpperCase();
+    b.onclick=()=>{day=i;render();}; tabs.appendChild(b);});
+  const nb=document.createElement('button');
+  nb.className='tab'+(day===-1?' on':''); nb.textContent='🍽';
+  nb.style.flex='0 0 46px'; nb.onclick=()=>{day=-1;renderNutri();}; tabs.appendChild(nb);
+  const mb=document.createElement('button');
+  mb.className='tab'+(day===-2?' on':''); mb.textContent='📏';
+  mb.style.flex='0 0 46px'; mb.onclick=()=>{day=-2;renderMisure();}; tabs.appendChild(mb);
+}
+function img(e){
+  if(e.img && IMGS[e.img]) return `<div class="imgwrap"><img loading="lazy" src="data:image/jpeg;base64,${IMGS[e.img]}" alt=""></div>`;
+  if(e.imgurl) return `<div class="imgwrap"><img loading="lazy" src="${e.imgurl}" alt=""></div>`;
+  return '';
+}
+const NUTRI_HTML=`
+<div class="nutri">
+ <div class="nb warn2"><strong>Prima di tutto:</strong> questi sono principi generali di educazione alimentare, non una dieta. Per quantità personalizzate (soprattutto per dimagrire) serve un medico o un nutrizionista. A 17 anni sei ancora in crescita: mai diete fai-da-te o troppo restrittive.</div>
+
+ <h3>La regola numero uno</h3>
+ <p>Da principiante che vuole <strong>mettere muscolo e definirsi insieme</strong>, non devi né abbuffarti né metterti a dieta. All'inizio il corpo fa entrambe le cose se mangi <em>bene e a sufficienza</em>. Obiettivo: pasti normali e regolari, non "tanto" e non "poco".</p>
+
+ <h3>Il metodo del piatto</h3>
+ <p>Il modo più semplice per comporre un pasto senza pesare niente. Dividi il piatto in tre:</p>
+ <div class="plate-vis"><div class="pv verd">½ VERDURA</div><div class="pv carb">¼ CARBOIDRATI</div><div class="pv prot">¼ PROTEINE</div></div>
+ <ul>
+   <li><strong>Metà verdura</strong> (cruda o cotta): riempie, dà fibra e micronutrienti.</li>
+   <li><strong>Un quarto carboidrati</strong>: pasta, riso, pane, patate. Sono il carburante per allenarti, non il nemico.</li>
+   <li><strong>Un quarto proteine</strong>: carne, pesce, uova, legumi, latticini. Servono a costruire il muscolo.</li>
+   <li>Aggiungi un cucchiaio di <strong>olio d'oliva</strong> a crudo e un frutto.</li>
+ </ul>
+
+ <h3>Perché 300 g di pasta + 300 g di spezzatino no</h3>
+ <p>È il classico errore. Ecco le porzioni <em>indicative</em> per un ragazzo attivo della tua età (a crudo):</p>
+ <table class="ptab">
+   <tr><th>Alimento</th><th>Porzione indicativa</th><th>L'errore</th></tr>
+   <tr><td>Pasta / riso</td><td>80–100 g</td><td>300 g = tripla porzione</td></tr>
+   <tr><td>Carne / pesce</td><td>100–150 g</td><td>300 g = doppia porzione</td></tr>
+   <tr><td>Pane</td><td>50–70 g</td><td>—</td></tr>
+   <tr><td>Verdura</td><td>a volontà</td><td>quella che spesso manca</td></tr>
+   <tr><td>Frutta</td><td>1–2 frutti</td><td>—</td></tr>
+ </table>
+ <p class="note2">Un piatto da 300+300 è due-tre pasti in uno, quasi senza verdura: troppo in un colpo solo, poco equilibrato. Meglio la porzione giusta e, se hai ancora fame, aggiungere verdura o un frutto.</p>
+
+ <h3>Come distribuire la giornata</h3>
+ <ul>
+   <li><strong>Non saltare la colazione</strong>: è il pasto che salti proprio quando ti alleni. Vanno bene latte/yogurt, cereali o pane, un frutto.</li>
+   <li><strong>3 pasti + 1–2 spuntini</strong> (frutta, yogurt, frutta secca) tengono stabile l'energia meglio di due mega-pasti.</li>
+   <li><strong>Attorno all'allenamento</strong>: un pasto normale 1–2 ore prima; dopo, un pasto completo con proteine e carboidrati. Niente di complicato.</li>
+ </ul>
+
+ <h3>Acqua</h3>
+ <p>Bevi durante il giorno e in allenamento. Circa <strong>1,5–2 litri</strong>, di più se sudi molto. Le bibite zuccherate e gli energy drink non contano e sono da limitare.</p>
+
+ <h3>I 5 errori del principiante</h3>
+ <ul>
+   <li><strong>Saltare i pasti</strong> pensando di definirsi: rallenti i progressi e arrivi affamato la sera.</li>
+   <li><strong>Proteine "a tutti i costi"</strong>: servono, ma 300 g di carne non fanno più muscolo di 130. Il muscolo cresce con allenamento + sonno + cibo adeguato, non con l'eccesso.</li>
+   <li><strong>Integratori e proteine in polvere</strong>: da principiante non servono. Prima si sistema il piatto vero. Semmai, ne parli con un professionista.</li>
+   <li><strong>Diete drastiche viste sui social</strong>: a 17 anni fanno più danni che risultati.</li>
+   <li><strong>Dormire poco</strong>: il muscolo si costruisce nel recupero. 8+ ore contano quanto la palestra.</li>
+ </ul>
+
+ <div class="nb warn2"><strong>Quando serve il professionista:</strong> se l'obiettivo è perdere peso in modo mirato, se ci sono allergie o condizioni mediche, o se vuoi numeri precisi (calorie, grammature). Un nutrizionista imposta tutto sulla persona; questa scheda serve solo a farti capire come è fatto un pasto sensato.</p></div>
+</div>
+`;
+window.renderNutri=function(){
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  const tabs=document.querySelectorAll('#tabs .tab'); if(tabs.length) tabs[tabs.length-1].classList.add('on');
+  document.getElementById('view').innerHTML=NUTRI_HTML;
+}
+
+window.renderMisure=async function(){
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  const tabs=document.querySelectorAll('#tabs .tab'); if(tabs.length) tabs[tabs.length-1].classList.add('on');
+  const oggi=new Date().toISOString().slice(0,10);
+  document.getElementById('view').innerHTML=`<div class="mis">
+    <h3>Registro misure</h3>
+    <div class="nb">Serve a seguire i progressi nel tempo e ad arrivare dal nutrizionista sportivo con uno storico. Non è un giudizio: sono solo numeri da mostrare a chi ti segue. Misura a digiuno, la mattina, sempre nelle stesse condizioni.</div>
+    <div class="misform">
+      <div><label>Data</label><input type="date" id="m_data" value="${oggi}"></div>
+      <div><label>Peso (kg)</label><input type="number" inputmode="decimal" id="m_peso" placeholder="es. 94"></div>
+      <div><label>Vita (cm)</label><input type="number" inputmode="decimal" id="m_vita" placeholder="es. 102"></div>
+      <div><label>Altezza (cm)</label><input type="number" inputmode="decimal" id="m_alt" placeholder="es. 186"></div>
+      <div class="full"><label>Note (facoltativo)</label><input type="text" id="m_note" placeholder="es. dopo 2 settimane"></div>
+    </div>
+    <button class="misbtn" onclick="salvaMisura()">&#10003; Salva misura di oggi</button>
+    <div id="mistoria">Caricamento storico…</div>
+  </div>`;
+  caricaMisure();
+}
+window.salvaMisura=async function(){
+  const rec={
+    data:document.getElementById('m_data').value||new Date().toISOString().slice(0,10),
+    peso:parseFloat(document.getElementById('m_peso').value)||null,
+    vita:parseFloat(document.getElementById('m_vita').value)||null,
+    altezza:parseFloat(document.getElementById('m_alt').value)||null,
+    note:document.getElementById('m_note').value||'',
+    utente:USER?USER.email:'', creato:serverTimestamp()
+  };
+  if(!rec.peso && !rec.vita){alert('Inserisci almeno peso o vita.');return;}
+  try{ await addDoc(collection(db,'utenti',USER.uid,'misure'),rec); caricaMisure(); 
+    document.getElementById('m_peso').value='';document.getElementById('m_vita').value='';document.getElementById('m_note').value=''; }
+  catch(e){ alert('Salvataggio in coda (offline): verrà inviato appena c\'è connessione.'); }
+}
+async function caricaMisure(){
+  const box=document.getElementById('mistoria'); if(!box)return;
+  try{
+    const q=query(collection(db,'utenti',USER.uid,'misure'),orderBy('creato','desc'),limit(40));
+    const snap=await getDocs(q);
+    if(snap.empty){box.innerHTML='<p style="color:var(--dim);font-size:14px;margin-top:14px">Nessuna misura registrata. Salva la prima qui sopra.</p>';return;}
+    const rows=[]; snap.forEach(d=>rows.push(d.data()));
+    let h='<table class="mistab"><tr><th>Data</th><th>Peso</th><th>Vita</th><th>Var. peso</th></tr>';
+    rows.forEach((r,i)=>{
+      let tr='';
+      const prev=rows[i+1];
+      if(prev && r.peso && prev.peso){
+        const d=(r.peso-prev.peso);
+        const cls=d<0?'dn':(d>0?'up':'');
+        tr=`<span class="trend ${cls}">${d>0?'+':''}${d.toFixed(1)}</span>`;
+      }
+      h+=`<tr><td>${r.data}${r.note?'<br><span style="color:var(--dim);font-size:11px">'+r.note+'</span>':''}</td>
+        <td>${r.peso?r.peso+' kg':'—'}</td><td>${r.vita?r.vita+' cm':'—'}</td><td>${tr||'—'}</td></tr>`;
+    });
+    h+='</table>';
+    box.innerHTML=h;
+  }catch(e){ box.innerHTML='<p style="color:var(--dim)">Storico non disponibile offline.</p>'; }
+}
+window.render=function(){
+  if(day===-1){renderNutri();return;}
+  if(day===-2){renderMisure();return;}
+  document.querySelectorAll('.tab').forEach((b,i)=>b.classList.toggle('on',i===day));
+  const d=DATA[day];
+  let h=`<div class="daytitle">${d.d} &mdash; ${d.t||''}</div>`;
+  d.ex.forEach((e,j)=>{
+    const key=day+'-'+j, n=done[key]||0, fin=n>=e.s;
+    let plates='';
+    for(let s=0;s<e.s;s++) plates+=`<button class="plate ${s<n?'on':''}" onclick="tick(${j},${s})">${s+1}</button>`;
+    h+=`<div class="card ${fin?'done':''}">${img(e)}
+      <div class="body"><h2>${e.n}</h2>
+        <div class="meta"><span class="pill">${e.s} serie</span><span class="pill">${e.r} rip.</span><span class="pill rest">rec. ${e.rl}</span></div>
+        ${e.rv?`<div class="reqvid">🎥 <strong>Lo zio ti chiede un video di questa esecuzione</strong>: filmati di lato, con carico leggero, una serie intera, e mandaglielo su WhatsApp.</div>`:''}
+        ${e.c&&e.c.length?`<ul class="cues">${e.c.map(c=>`<li>${c}</li>`).join('')}</ul>`:''}
+        ${e.st&&e.st.length?`<div class="exec"><div class="exectitle">Come si esegue</div>
+          <ol>${e.st.map(s=>`<li>${s}</li>`).join('')}</ol>
+          ${e.e?`<div class="err"><strong>Errori da evitare:</strong> ${e.e}</div>`:''}
+          ${e.v?`<div class="yt"><strong>Tutorial YouTube:</strong> <a href="${e.v}" target="_blank">${e.v}</a></div>`:''}
+        </div>`:''}
+        <div class="sets"><span class="setlbl">Serie</span>${plates}</div>
+        <div class="kgrow"><label>Peso usato</label><input type="number" inputmode="decimal" placeholder="kg" value="${kgs[key]||(LASTW[e.n]&&LASTW[e.n].kg)||''}" onchange="kgs['${key}']=this.value"></div>
+        ${LASTW[e.n]?`<div class="lastw">Ultima volta (${LASTW[e.n].data}): ${LASTW[e.n].fatte}/${LASTW[e.n].tot} serie${LASTW[e.n].kg?' @ '+LASTW[e.n].kg+' kg':''}</div>`:''}
+        <div class="vidbox" id="vid-${day}-${j}"></div>
+        <div class="row">
+          <button class="btn timer" onclick="startTimer(${e.rs},'${(e.n||'').replace(/'/g,"\\'")}')">&#9202; Recupero ${e.rl}</button>
+          ${e.v?`<button class="btn video" onclick="playVideo(${j})">&#9654; Guarda il video</button>`:''}
+        </div>
+      </div></div>`;
+  });
+  h+=`<button class="savebtn" onclick="salva()">&#10003; Fine allenamento &mdash; salva</button><div id="okz"></div>`;
+  document.getElementById('view').innerHTML=h;
+}
+window.salva=async function(){
+  const d=DATA[day];
+  const esercizi=d.ex.map((e,j)=>{const key=day+'-'+j;
+    return {n:e.n, fatte:done[key]||0, tot:e.s, kg:kgs[key]||null};});
+  const fatte=esercizi.reduce((a,x)=>a+x.fatte,0), tot=esercizi.reduce((a,x)=>a+x.tot,0);
+  try{
+    await addDoc(collection(db,'utenti',USER.uid,'allenamenti'),{
+      data:new Date().toISOString().slice(0,10), giorno:d.d, gruppo:d.t||'',
+      esercizi, fatte, tot, utente:USER?USER.email:'', creato:serverTimestamp()});
+    const upd={};
+    d.ex.forEach((e,j)=>{const key=day+'-'+j;
+      if((done[key]||0)>0 || kgs[key]){
+        upd[e.n]={kg:kgs[key]||(LASTW[e.n]&&LASTW[e.n].kg)||null,fatte:done[key]||0,tot:e.s,data:new Date().toISOString().slice(0,10)};
+      }});
+    if(Object.keys(upd).length){ try{ await setDoc(doc(db,'utenti',USER.uid,'dati','pesi'), upd, {merge:true}); Object.assign(LASTW,upd);}catch(e){} }
+    document.getElementById('okz').innerHTML='<div class="okmsg">Allenamento salvato: lo zio lo vede nella sua dashboard. (Se sei offline verrà inviato appena torna la connessione.)</div>';
+  }catch(e){
+    document.getElementById('okz').innerHTML='<div class="msg">Salvataggio in coda: verrà inviato appena c\'è connessione.</div>';
+  }
+}
+window.tick=function(j,s){
+  const key=day+'-'+j, e=DATA[day].ex[j];
+  done[key]=(done[key]||0)===s+1?s:s+1;
+  render();
+  if((done[key]||0)>0 && (done[key]||0)<e.s) startTimer(e.rs,e.n);
+}
+function ytId(u){const m=String(u).match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{6,})/);return m?m[1]:null;}
+window.playVideo=function(j){
+  const e=DATA[day].ex[j], box=document.getElementById('vid-'+day+'-'+j);
+  if(!box) return;
+  if(box.classList.contains('show')){box.classList.remove('show');box.innerHTML='';if(box._fb){box._fb.remove();box._fb=null;}return;}
+  if(/\.(mp4|webm|mov)(\?|$)/i.test(e.v)){box.innerHTML=`<video src="${e.v}" controls playsinline></video>`;box.classList.add('show');return;}
+  const id=ytId(e.v);
+  if(!id || location.protocol==='file:'){ if(e.v) window.open(e.v,'_blank'); return; }
+  box.innerHTML=`<iframe src="https://www.youtube.com/embed/${id}?rel=0&playsinline=1" allow="encrypted-media; fullscreen; picture-in-picture" allowfullscreen referrerpolicy="origin"></iframe>`;
+  box.classList.add('show');
+  const fb=document.createElement('div');fb.className='vidfb';
+  fb.innerHTML=`Se il player resta vuoto: <a href="${e.v}" target="_blank">apri su YouTube</a>`;
+  box.after(fb); box._fb=fb;
+}
+// ---------- TIMER ----------
+let T=null,left=0,total=0;
+const bar=document.getElementById('bar'),tval=document.getElementById('tval'),
+      tname=document.getElementById('tname'),fgc=document.querySelector('.fgc');
+window.startTimer=function(sec,name){clearInterval(T);left=sec;total=sec;
+  tname.textContent='Recupero: '+name;bar.classList.add('show');draw();
+  T=setInterval(()=>{left--;draw();if(left<=0){clearInterval(T);beep();
+    if(navigator.vibrate)navigator.vibrate([200,100,200]);tval.textContent='VIA!';}},1000);}
+function draw(){const m=Math.floor(Math.max(left,0)/60),s=Math.max(left,0)%60;
+  tval.textContent=m+':'+String(s).padStart(2,'0');
+  fgc.style.strokeDashoffset=138.2*(1-Math.max(left,0)/total);}
+document.getElementById('plus').onclick=()=>{left+=30;total=Math.max(total,left);draw();
+  if(!T){T=setInterval(()=>{left--;draw();if(left<=0){clearInterval(T);T=null;beep();tval.textContent='VIA!';}},1000);}};
+document.getElementById('stop').onclick=()=>{clearInterval(T);T=null;bar.classList.remove('show');};
+function beep(){try{const ctx=new (window.AudioContext||window.webkitAudioContext)();
+ [0,0.25,0.5].forEach(t=>{const o=ctx.createOscillator(),g=ctx.createGain();
+  o.connect(g);g.connect(ctx.destination);o.frequency.value=880;
+  g.gain.setValueAtTime(.4,ctx.currentTime+t);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+t+.2);
+  o.start(ctx.currentTime+t);o.stop(ctx.currentTime+t+.2);});}catch(e){}}
+if('serviceWorker' in navigator && location.protocol!=='file:'){navigator.serviceWorker.register('sw.js');}
+</script></body></html>
